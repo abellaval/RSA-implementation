@@ -12,9 +12,6 @@ extern u_int64_t powo(u_int64_t, u_int64_t, u_int64_t);
 __asm__(".globl powo\n\t"
         ".type func, @function\n\t"
 	"powo:\n\t"
-		"push rbp;\n\t" // prologue
-		"mov rbp, rsp;\n\t"
-
 		"mov rax, 1;\n\t" // init
 		"mov r8, rdx;\n\t"
 
@@ -46,8 +43,6 @@ __asm__(".globl powo\n\t"
 		"cmp rsi, 0;\n\t" // c'est fini
 		"jnz encore;\n\t"
 
-		"mov rsp, rbp\n\t" // epilogue
-		"pop rbp\n\t"
 		"ret;\n\t");
 
 int main(){
