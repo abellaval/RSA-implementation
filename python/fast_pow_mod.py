@@ -1,13 +1,13 @@
 def fast_pow_mod(b, e, m):
     mask = 1
     res = 1
-    pow2 = b
+    b_pow2n = b
     while True: # n + 1/2 loop
         if (mask & e) == mask:
-            res = (res * pow2) % m
-        if (mask >=e):
+            res = (res * b_pow2) % m
+        if mask >= e:
             return res
-        pow2 = (pow2 * pow2) % m
+        pow2 = (b_pow2 * b_pow2) % m
         mask <<= 1
 
 
