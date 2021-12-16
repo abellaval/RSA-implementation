@@ -13,7 +13,7 @@ def fast_pow_mod(b, e, m):
 b = 42
 e = 1000000000000000000000
 m = 423141234
-x = fast_mod_pow2(b, e, m)
+x = fast_mod_pow(b, e, m)
 # y = pow(b, e, m)
 print(x)
 # print(y)
