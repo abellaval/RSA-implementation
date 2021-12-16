@@ -17,5 +17,9 @@ def fast_mod_pow(b, e, n):
     return res
 
 
-x = fast_mod_pow(2, 3, 6)
+b = 42
+e = 1000000000000000000000
+m = 423141234
+x = fast_mod_pow(b, e, m)
+# x = pow(b, e, m)
 print(x)
