@@ -5,8 +5,8 @@ def fast_pow_mod(b, e, m):
     while mask <= e:
         if (mask & e) == mask:
             res = (res * l_val) % m
-        mask = mask << 1
         l_val = (l_val * l_val) % m
+        mask <<= 1
     return res
 
 
