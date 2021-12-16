@@ -7,7 +7,7 @@ def fast_pow_mod(b, e, m):
             res = (res * b_pow2) % m
         if mask >= e:
             return res
-        pow2 = (b_pow2 * b_pow2) % m
+        b_pow2 = (b_pow2 * b_pow2) % m
         mask <<= 1
 
 
