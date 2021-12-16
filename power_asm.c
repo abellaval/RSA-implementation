@@ -4,6 +4,8 @@
 
 // base<2^32, expo<2^64, modula<2^32
 
+// bien mais pas ouf, bcp de calcule redondant (parcourir exp de gauche a droite)
+
 #include <stdlib.h>
 #include <stdio.h>
 
