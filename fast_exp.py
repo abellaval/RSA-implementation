@@ -16,20 +16,16 @@ def fast_mod_pow(b, e, m):
             res = (res * b) % m
     return res
 
+
 def fast_mod_pow2(b, e, m):
     mask = 1
-    mask_index = 0
-    l_index = 0
-    l_val = b
     res = 1
+    l_val = b
     while mask <= e:
         if (mask & e) == mask:
-            while l_index < mask_index:
-                l_val = (l_val * l_val) % m
-                l_index += 1
             res = (res * l_val) % m
-        mask_index += 1
         mask = mask << 1
+        l_val = (l_val * l_val) % m
     return res
 
 
@@ -37,8 +33,8 @@ b = 42
 e = 1000000000000000000000
 m = 423141234
 # x = fast_mod_pow(b, e, m)
-# y = fast_mod_pow2(b, e, m)
-z = pow(b, e, m)
+y = fast_mod_pow2(4, 3, m)
+# z = pow(b, e, m)
 # print(x)
-# print(y)
-print(z)
+print(y)
+# print(z)
