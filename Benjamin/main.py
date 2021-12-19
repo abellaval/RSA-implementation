@@ -4,14 +4,14 @@ from fonctions import *
 def KeyGen(k) : 
     p = genNum(k)
     q = genNum(k)
-    while (q == p):     
+    while (q == p):     # assure que p != q
         q = genNum(k)
+    
     N = p*q
     phiN = (p-1)*(q-1)
 
     e = choseEps(phiN)
     d = inverse_mod(e, phiN)
-    
     return ((N,e),(N,d))
     
     
@@ -35,8 +35,9 @@ def main():
     pk, sk = KeyGen(bitSize)
     stop = time.time()
     print("Keys generated in " + str(int(stop - start)) + " seconds\n")
-    while True:
-        c = input("Enter choice :\n1 : Encrypt\n2 : Decrypt\n3 : Display keys\n")
+    c = ""
+    while c != "4":
+        c = input("Enter choice :\n1 : Encrypt\n2 : Decrypt\n3 : Display keys\n4 : Exit\n")
         
         # Encrypt
         if c == "1":

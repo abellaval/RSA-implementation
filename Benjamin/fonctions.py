@@ -4,11 +4,8 @@ import secrets
 def pgcd(a,b) : 
     first = max(a,b)
     second = min(a,b)
-    
     while second != 0:
-        tmp = a
-        first = second
-        second = tmp%second
+        first, second = second, first%second
     return first
 
 
@@ -21,12 +18,10 @@ def inverse_mod(x,p):       # renvoie l'inverse de x % p
     b = x
     prev = [1,0]    # première ligne
     curr = [0,1]    # deuxième ligne
-    
     while b != 0:
-        q = a//b
+        q = a//b    # quotient
         r = a%b     # reste
         tmp0, tmp1 = prev[0] - curr[0] * q, prev[1] - curr[1] * q
-        # a, b -> b, reste
         a, b = b, r
         # passe à la ligne suivante
         prev[0], prev[1] = curr[0], curr[1]
@@ -41,8 +36,8 @@ def is_prime(n) :
     sqroot = int(math.sqrt(n))
     for i in range(2, sqroot + 1):
         if (n % i) == 0:
-            return 0
-    return 1
+            return False
+    return True
 
 
 def exp(a,x,p):     # expo rapide
@@ -70,15 +65,9 @@ def choseEps(phiN):
             return i
 
 
-def genRandom(bitsSize):
-    return secrets.randbits(bitsSize)
-
-
 def genNum(bitsSize):
     prime = False
-    generatedNum = 0
-
     while not prime:
-        generatedNum = genRandom(bitsSize)
+        generatedNum = secrets.randbits(bitsSize)
         prime = is_prime(generatedNum)
     return generatedNum
