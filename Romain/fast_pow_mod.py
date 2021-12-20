@@ -1,11 +1,12 @@
 def fast_pow_mod(b, e, m):
     res = 1
-    while e > 0 :
+    while True :
         if e & 1:
             res = (res * b) % m
+        if e == 1:
+            return res
         b = (b * b) % m
         e >>= 1
-    return res
 
 
 b = 42
