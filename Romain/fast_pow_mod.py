@@ -1,12 +1,11 @@
 def fast_pow_mod(b, e, m):
     res = 1
-    b_pow2 = b
     while True: # n + 1/2 loop
         if e & 1:
-            res = (res * b_pow2) % m
+            res = (res * b) % m
         if e==0:
             return res
-        b_pow2 = (b_pow2 * b_pow2) % m
+        b = (b * b) % m
         e >>= 1
 
 
