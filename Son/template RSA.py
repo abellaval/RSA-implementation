@@ -48,6 +48,18 @@ def exp(a,x,p):
     """
 
     
+def euclide_etendu(a,b):
+    """
+    Etant donné que le dernier reste dans les coefficients de Bézout correspond au PGCD : on peut juste faire une fonction pour calculer le PGCD et Bézout.
+    """
+    x=1;xx=0
+    y=0;yy=1
+    while b!=0:
+        q=a//b
+        a,b=b,a%b
+        xx,x= x-q*xx,xx
+        yy,y= y-q*yy,yy
+    return(a,x,y)
 
 
 
