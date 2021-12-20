@@ -1,6 +1,6 @@
 def fast_pow_mod(b, e, m):
     res = 1
-    while True :
+    while True : // n + 1/2 loop
         if e & 1:
             res = (res * b) % m
         if e == 1:
