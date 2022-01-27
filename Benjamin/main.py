@@ -4,7 +4,7 @@ from fonctions import *
 def KeyGen(k) : 
     p = genNum(k)
     q = genNum(k)
-    while (q == p):     # assure que p != q
+    while (q == p):     # p et q différents
         q = genNum(k)
     
     N = p*q
@@ -12,6 +12,16 @@ def KeyGen(k) :
 
     e = choseEps(phiN)
     d = inverse_mod(e, phiN)
+
+    """
+    print("p = " + str(p))
+    print("q = " + str(q))
+    print("N = " + str(N))
+    print("PhiN = " + str(phiN))
+    print("e = " + str(e))
+    print("d = " + str(d))
+    """
+
     return ((N,e),(N,d))
     
     
