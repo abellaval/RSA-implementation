@@ -34,7 +34,7 @@ def D(c,d,N) :
 def main():
     bitSize = ''
     while type(bitSize) != int:
-        bitSize = input("Size of p and q in bits (8 - ~50): \n")
+        bitSize = input("Size of p and q in bits (8 - ~600): \n")
         try:
             bitSize = int(bitSize)
         except:

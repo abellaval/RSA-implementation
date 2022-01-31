@@ -49,12 +49,10 @@ def temoin_miller(n, rand):
     x = exp(rand, d, n)
     if (x == 1) or (x == n-1):
         return False
-
     for _ in range(s-1):
         x = exp(x,2,n)
         if (x == n - 1):
             return False
-
     return True 
 
 
@@ -62,9 +60,11 @@ def miller_rabin(n, k):     # n : nbr à tester, k : nbr d'itérations
     tested = []
     for _ in range(k):
         rand = secrets.randbelow(n-4) + 2
+        while (rand in tested):
+            rand = secrets.randbelow(n-4) + 2
+        tested.append(rand)
         if temoin_miller(n, rand):
             return False
-    
     return True
 
 
