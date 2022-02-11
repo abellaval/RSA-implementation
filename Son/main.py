@@ -1,5 +1,6 @@
 import time
 from fonctions import *
+from OAEP import *
 
 def KeyGen(k) : 
     p = genNum(k)
@@ -44,6 +45,8 @@ def main():
     start = time.time()
     pk, sk = KeyGen(bitSize)
     stop = time.time()
+    long= sk[0].bit_length()
+    long =long//8+1
     print("Keys generated in " + str(int(stop - start)) + " seconds\n")
     c = ""
     while c != "4":
@@ -58,6 +61,9 @@ def main():
                     msg = int(msg)
                 except:
                     pass
+            msg = oaep_encode(msg,long)
+            print(msg)
+            msg= int.from_bytes(msg,'big')
             msg_e = E(msg, pk[1], pk[0])
             print("Encrypted message : " + str(msg_e))
             
@@ -71,6 +77,9 @@ def main():
                 except:
                     pass
             msg_d = E(msg, sk[1], sk[0])
+            print(msg_d)
+            msg=i2osp(msg_d,long)
+            msg_d = oaep_decode(msg,long)
             print("Decrypted message : " + str(msg_d))
         
         # Display
