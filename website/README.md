@@ -1,4 +1,4 @@
-# Private Voting Website
+# Voting Website
 
 ## Setup local dev env
 
@@ -24,8 +24,14 @@
 ```shell
   source flask_env.sh
 ```
-> :warning: this step is not necessary if you are using Pycharm Pro, you can setup these inside the project launch config. Specify the path to the app.py file in Target, Application is **app**, FLASK_ENV is **development** and thick the FLASK_DEBUG option.
-- Run the server
+> :warning: this step is not necessary if you are using Pycharm, you can setup these inside the project launch config. Setup your Pycharm to launch run.py and add the env variables from flask_env.sh to the env field, next to PYTHONBUFFERED=1, seperated by spaces.
+- Run the dev server
 ```shell
-  python -m flask run
+  python run.py
 ```
+
+## Accessing different routes
+- The Client app is on the default route '/'
+- The Admin app is on the route '/admin'
+- The Ballot app is on the route '/ballot'
+- The Counter app is on the route '/counter'
