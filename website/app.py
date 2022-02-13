@@ -1,14 +1,12 @@
-from flask import Flask, render_template
-import config
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from admin import app as admin_app
+from client import app as client_app
+from ballot import app as ballot_app
+from counter import app as counter_app
 
-app = Flask(__name__)
-
-if app.config.get("DEBUG"):
-    app.config.from_object(config.Debug())
-else:
-    app.config.from_object(config.Production())
-
-
-@app.route("/")
-def home():
-    return render_template("home.html")
+dispatcher_app = DispatcherMiddleware(
+    client_app,
+    {"/admin": admin_app,
+     "/ballot": ballot_app,
+     "/counter": counter_app}
+)
