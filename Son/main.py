@@ -61,8 +61,8 @@ def main():
                     msg = int(msg)
                 except:
                     pass
+            msg= int_to_bytes(msg)
             msg = oaep_encode(msg,long)
-            print(msg)
             msg= int.from_bytes(msg,'big')
             msg_e = E(msg, pk[1], pk[0])
             print("Encrypted message : " + str(msg_e))
