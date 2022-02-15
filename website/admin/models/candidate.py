@@ -1,35 +1,10 @@
-class Candidate:
-    def __init__(self, name, number, description=""):
-        """
-        Create a new candidate object
-        :param name: the name of the candidate
-        :param number: the number used for his vote
-        :param description: a short description about the candidate
-        """
-        self.name = name
-        self.number = number
-        self.description = description
+from website.admin import db
 
-    @staticmethod
-    def get_candidate(db, election_id, candidates_name):
-        """
-        Get candidate from database based on the election and the name
-        :param db: the database object
-        :param election_id: the id of the election
-        :param candidates_name: the name of the candidate
-        :return: Candidate object
-        """
-        # TODO: To Implement
-        NotImplemented()
 
-    @staticmethod
-    def get_all_candidates(db, election_id):
-        """
-        Get all the candidates that participate in the election
-        with election_id
-        :param db: the database object
-        :param election_id: the id of the election
-        :return: List[Candidates]
-        """
-        # TODO: To Implement
-        NotImplemented()
+class Candidate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    election_id = db.Column(db.Integer, db.ForeignKey("election.id"),
+                            nullable=False)
+    vote_number = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(32), nullable=False)
+    description = db.Column(db.String(280), nullable=True)
