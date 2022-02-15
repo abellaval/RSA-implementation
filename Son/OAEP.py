@@ -45,10 +45,11 @@ def xor(data: bytes, mask: bytes) -> bytes:
     
 
 def oaep_encode(m:bytes,k:int,label: bytes = b'', Hash:Callable=sha256)->bytes:
-    mlen= len(m)
+    mLen= len(m)
     lhash= Hash(label)
     hLen=len(lhash)
-    ps = b'\x00' * (k- mlen -2*hLen-2)
+    assert mLen <= k-2*hLen -2 
+    ps = b'\x00' * (k- mLen -2*hLen-2)
     DB = lhash+ps+ b'\x01' + m 
     seed = os.urandom(hLen)
     dbMask=mgf1(seed,k-hLen-1,Hash)
@@ -58,8 +59,11 @@ def oaep_encode(m:bytes,k:int,label: bytes = b'', Hash:Callable=sha256)->bytes:
     return b'\x00'+maskedSeed +maskedDB
 
 def oaep_decode(C:bytes,k:int,label:bytes=b'',Hash:Callable=sha256)-> int:
+    CLen = len(C)
+    assert CLen == k
     lhash = Hash(label)
     hLen = len(lhash)
+    assert k >= 2*hLen+2
     maskedSeed= C[1:hLen+1]
     maskedDB=C[hLen+1:]
     seedMask=mgf1(maskedDB,hLen,Hash)
@@ -78,3 +82,6 @@ def oaep_decode(C:bytes,k:int,label:bytes=b'',Hash:Callable=sha256)-> int:
             raise Exception()
     m = DB[i:]
     return int.from_bytes(m,'big')
+    
+if __name__ == "__main__":
+    oaep_encode(b'\x00',1)
