@@ -1,6 +1,7 @@
 import time
 from fonctions import *
 from OAEP import *
+from math import ceil
 
 def KeyGen(k) : 
     p = genNum(k)
@@ -46,7 +47,8 @@ def main():
     pk, sk = KeyGen(bitSize)
     stop = time.time()
     long= sk[0].bit_length()
-    long =long//8+1
+    long =ceil(long//8)
+    print(long)
     print("Keys generated in " + str(int(stop - start)) + " seconds\n")
     c = ""
     while c != "4":
