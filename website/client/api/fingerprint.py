@@ -1,14 +1,13 @@
 from website.client import app
 from flask import request, Response
 from website.client.controllers.fingerprint import generate_fingerprint
-from datetime import datetime, timedelta
 
 
-@app.route("/fingerprint/", methods=["POST"])
+@app.route("/api/fingerprint/", methods=["POST"])
 def fingerprint():
     # TODO: Add cookie to server side
     _fingerprint = generate_fingerprint(request)
-    ttl_sec = 24*60*60
+    ttl_sec = 24 * 60 * 60
     response = Response(
         headers=[
             ("Set-Cookie",

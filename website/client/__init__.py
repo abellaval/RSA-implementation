@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, Response
-from hashlib import sha256
+from flask import Flask
 
 app = Flask(__name__)
 
 from website.client.views.index import *
-from website.client.views.fingerprint import *
+from website.client.api.fingerprint import *
