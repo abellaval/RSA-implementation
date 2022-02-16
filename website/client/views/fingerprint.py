@@ -1,18 +1,18 @@
 from website.client import app
 from flask import request, Response
 from website.client.controllers.fingerprint import generate_fingerprint
+from datetime import datetime, timedelta
 
 
 @app.route("/fingerprint/", methods=["POST"])
 def fingerprint():
     # TODO: Add cookie to server side
-    # TODO: Add expiration date (12~24h?)
+    _fingerprint = generate_fingerprint(request)
+    expiration_date = datetime.utcnow() + timedelta(days=1)
     response = Response(
         headers=[
             ("Set-Cookie",
-             "fingerprint={fingerprint}; HttpOnly; Secure; SameSite=Strict".format(
-                 fingerprint=generate_fingerprint(request))
-             ),
+             f"fingerprint={_fingerprint}; HttpOnly; Secure; SameSite=Strict; Expires={expiration_date}"),
             ("Content-Type", "application/json")
         ]
     )
