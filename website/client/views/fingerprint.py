@@ -8,11 +8,11 @@ from datetime import datetime, timedelta
 def fingerprint():
     # TODO: Add cookie to server side
     _fingerprint = generate_fingerprint(request)
-    expiration_date = datetime.utcnow() + timedelta(days=1)
+    ttl_sec = 24*60*60
     response = Response(
         headers=[
             ("Set-Cookie",
-             f"fingerprint={_fingerprint}; HttpOnly; Secure; SameSite=Strict; Expires={expiration_date}"),
+             f"fingerprint={_fingerprint}; HttpOnly; Secure; SameSite=Strict; Max-Age={ttl_sec};"),
             ("Content-Type", "application/json")
         ]
     )
