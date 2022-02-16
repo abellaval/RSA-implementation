@@ -5,7 +5,7 @@ fpPromise
     .then(fp => fp.get())
     .catch(error => console.error(`Failed to get fingerprint \nError:${error}`))
     .then(result => {
-        generateFingerprint(window.location.href + "/fingerprint", result.visitorId)
+        generateFingerprint(window.location.href + "fingerprint/", result.visitorId)
     })
     .catch(error => console.error(`Failed to store fingerprint \nError:${error}`))
 
