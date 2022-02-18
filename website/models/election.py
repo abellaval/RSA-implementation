@@ -1,11 +1,8 @@
-from website.app import db
-
-
-class Election(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.String(240), nullable=True)
-    candidates = db.relationship("Candidate", backref="election")
-    voters_participating = db.relationship("VoterParticipation",
-                                           backref="election")
-    results = db.relationship("Result", backref="election")
+class Election:
+    def __init__(self, name, description, candidates, voters_participating,
+                 results):
+        self.name = name
+        self.description = description
+        self.candidates = candidates
+        self.voters_participating = voters_participating
+        self.results = results

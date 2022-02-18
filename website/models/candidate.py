@@ -1,10 +1,6 @@
-from website.app import db
-
-
-class Candidate(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    election_id = db.Column(db.Integer, db.ForeignKey("election.id"),
-                            nullable=False)
-    vote_number = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(32), nullable=False)
-    description = db.Column(db.String(280), nullable=True)
+class Candidate:
+    def __init__(self, participating_election, vote_number, name, description):
+        self.participating_election = participating_election
+        self.vote_number = vote_number
+        self.name = name
+        self.desciption = description
