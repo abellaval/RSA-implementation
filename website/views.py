@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request, make_response
 from database import get_db
 
 
@@ -10,6 +10,7 @@ def index():
         (2, "name2", "desc2"),
         (3, "name3", "desc3")
     ])
+
 
 def election(id):
     return render_template("election.html", id=id)
