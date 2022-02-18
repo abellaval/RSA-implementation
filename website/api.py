@@ -1,9 +1,7 @@
-from website.app import app
-from website.controllers.fingerprint import generate_fingerprint
-from flask import Request, Response, request
+from flask import Response, request
+from fingerprint import generate_fingerprint
 
 
-@app.route("/api/fingerprint/", methods=["POST"])
 def fingerprint():
     # TODO: Add cookie to server side?
     _fingerprint = generate_fingerprint(request)
