@@ -14,7 +14,7 @@ def get_db():
 
 
 @app.teardown_appcontext
-def clone_connection():
+def clone_connection(exception):
     db = getattr(g, "database", None)
     if db is not None:
         db.close()
