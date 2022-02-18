@@ -6,6 +6,13 @@
     <script defer src="{{ url_for("static", filename="js/fingerprint.js") }}" type="module"></script>
 </head>
 <body>
-<p>Client homepage</p>
+<h1>Client homepage</h1>
+<ul>
+    {% for election_id, election_name, election_description in elections_info %}
+        <a href="{{ url_for("election", id=election_id) }}">
+            <li>{{ election_name }}, {{ election_description }}</li>
+        </a>
+    {% endfor %}
+</ul>
 </body>
 </html>

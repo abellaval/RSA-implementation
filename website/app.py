@@ -6,6 +6,11 @@ import database
 app = Flask(__name__)
 
 app.add_url_rule("/", view_func=views.index)
+app.add_url_rule("/election/<int:id>", view_func=views.election)
 app.add_url_rule("/api/fingerprint/", view_func=api.fingerprint,
                  methods=["POST"])
 app.teardown_appcontext_funcs.append(database.clone_connection)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
