@@ -1,11 +1,11 @@
-from website.client import app
-from flask import request, Response
-from website.client.controllers.fingerprint import generate_fingerprint
+from website.app import app
+from website.controllers.fingerprint import generate_fingerprint
+from flask import Request, Response, request
 
 
 @app.route("/api/fingerprint/", methods=["POST"])
 def fingerprint():
-    # TODO: Add cookie to server side
+    # TODO: Add cookie to server side?
     _fingerprint = generate_fingerprint(request)
     ttl_sec = 24 * 60 * 60
     response = Response(

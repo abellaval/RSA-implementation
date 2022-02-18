@@ -1,4 +1,4 @@
-from website.admin import db
+from website.app import db
 
 
 class Election(db.Model):
