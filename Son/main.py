@@ -48,7 +48,6 @@ def main():
     stop = time.time()
     long= sk[0].bit_length()
     long =ceil(long//8)
-    print(long)
     print("Keys generated in " + str(int(stop - start)) + " seconds\n")
     c = ""
     while c != "4":

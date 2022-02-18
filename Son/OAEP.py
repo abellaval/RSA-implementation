@@ -41,6 +41,10 @@ def xor(data: bytes, mask: bytes) -> bytes:
             break
     return masked
 
+def bytesXOR(data:bytes,mask:bytes,length:int)-> bytes:
+    data= int.from_bytes(data,'big')
+    mask=int.from_bytes(mask,"big")
+    return i2osp(data^mask,length)
         
     
 
@@ -53,9 +57,9 @@ def oaep_encode(m:bytes,k:int,label: bytes = b'', Hash:Callable=sha256)->bytes:
     DB = lhash+ps+ b'\x01' + m 
     seed = os.urandom(hLen)
     dbMask=mgf1(seed,k-hLen-1,Hash)
-    maskedDB = xor(DB,dbMask)
+    maskedDB = bytesXOR(DB,dbMask,k-hLen-1)
     seedMask= mgf1(maskedDB,hLen)
-    maskedSeed = xor(seed,seedMask)
+    maskedSeed = bytesXOR(seed,seedMask,hLen)
     return b'\x00'+maskedSeed +maskedDB
 
 def oaep_decode(C:bytes,k:int,label:bytes=b'',Hash:Callable=sha256)-> int:
@@ -67,9 +71,9 @@ def oaep_decode(C:bytes,k:int,label:bytes=b'',Hash:Callable=sha256)-> int:
     maskedSeed= C[1:hLen+1]
     maskedDB=C[hLen+1:]
     seedMask=mgf1(maskedDB,hLen,Hash)
-    seed = xor(maskedSeed,seedMask)
+    seed = bytesXOR(maskedSeed,seedMask,hLen)
     dbMask = mgf1(seed,k-hLen-1,Hash)
-    DB = xor(maskedDB,dbMask)
+    DB = bytesXOR(maskedDB,dbMask,k-hLen-1)
     i = hLen
     while i < len(DB):
         if DB[i] == 0:
