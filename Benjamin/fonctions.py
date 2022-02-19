@@ -89,7 +89,7 @@ def choseEps(phiN):
     if (phiN > 65537 and euclide(phiN, 65537)[0] == 1):
         return 65537
     
-    for i in range(3, euclide(phiN, i)[0] == 1):
+    for i in range(3, phiN):
         if pgcd(phiN, i) == 1:
             return i
 
