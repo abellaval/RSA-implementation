@@ -6,18 +6,13 @@ CREATE TABLE IF NOT EXISTS election(
 
 CREATE TABLE IF NOT EXISTS candidate (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    election_id INTEGER REFERENCES election(id),
-    name TEXT NOT NULL,
-    vote_numer INTEGER NOT NULL,
-    description TEXT
+    name TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS voter_participation (
+CREATE TABLE IF NOT EXISTS voter (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     election_id INTEGER REFERENCES election(id),
-    fingerprint TEXT NOT NULL,
-    vote_token TEXT NOT NULL,
-    is_signed INTEGER NOT NULL
+    vote_token TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS result(
@@ -25,4 +20,24 @@ CREATE TABLE IF NOT EXISTS result(
     election_id INTEGER REFERENCES election(id),
     candidate_id INTEGER REFERENCES candidate(id),
     vote_count INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS fingerprint(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    election_id INTEGER REFERENCES election(id),
+    fingerprint TEXT NOT NULL,
+    vote_token TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS signature(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    vote_token TEXT NOT NULL UNIQUE,
+    is_signed INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS election_keys(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    election_id INTEGER REFERENCES election(id),
+    SK TEXT NOT NULL,
+    PK TEXT NOT NULL
 );
