@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Result</title>
+</head>
+<body>
+<h1>Results of Election {{ election.id }}:</h1>
+<ul>
+    {% for result in election.results %}
+        <li> {{ result.candidate.name }} has {{ result.votes }} votes</li>
+    {% endfor %}
+</ul>
+</body>
+</html>

@@ -15,9 +15,18 @@ def index():
     return render_template("index.html", elections_info=elections_info)
 
 
-def election(id):
+def election(election_id):
     election = next(filter(lambda election:
-                           election.id == id,
+                           election.id == election_id,
                            dummy_data.all_elections),
                     None)
     return render_template("election.html", election=election)
+
+
+def result(election_id):
+    # TODO: check if we have already voted
+    election = next(filter(lambda election:
+                           election.id == election_id,
+                           dummy_data.all_elections),
+                    None)
+    return render_template("result.html", election=election)

@@ -9,7 +9,7 @@
 <h1>Client homepage</h1>
 <ul>
     {% for election_id, election_name, election_description in elections_info %}
-        <a href="{{ url_for("election", id=election_id) }}">
+        <a href="{{ url_for("election", election_id=election_id) }}">
             <li>{{ election_name }}, {{ election_description }}</li>
         </a>
     {% endfor %}
