@@ -6,6 +6,11 @@
 </head>
 <body>
 <h1>Election Page</h1>
-<p>{{ id }}</p>
+<p>{{ election.id }}</p>
+<ul>
+    {% for candidate, candidate_number in election.candidates %}
+        <li>{{ candidate.name }}, {{ candidate_number }}</li>
+    {% endfor %}
+</ul>
 </body>
 </html>
