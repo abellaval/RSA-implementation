@@ -9,6 +9,8 @@ class PrimeShow(Scene):
 
     def eightIsNotPrime(self):
         n = Tex("$8$", color=RED)
+        text = Text("N'est pas un nombre premier", color=RED)
+        text.next_to(n, DOWN)
         
         self.play(Write(n))
 
@@ -28,10 +30,13 @@ class PrimeShow(Scene):
         fd = Tex("$( 1 * 8 )$")
         self.showFactor(n, f, fd, -3)
 
+        self.play(Write(text))
         self.wait(1)
 
     def fiveIsPrime(self):
         n = Tex("$5$", color=GREEN)
+        text = Text("Est bien un nombre premier", color=GREEN)
+        text.next_to(n, DOWN)
         
         self.play(Write(n))
 
@@ -43,7 +48,9 @@ class PrimeShow(Scene):
         fd = Tex("$( 1 * 5 )$")
         self.showFactor(n, f, fd, -2)
 
+        self.play(Write(text))
         self.wait(1)
+        
 
     def showFactor(self, n, f, fd, move):
 
