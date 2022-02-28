@@ -6,10 +6,12 @@ import database
 from website.ballot import Ballot
 
 app = Flask(__name__)
+app.secret_key = "dummyKey" # testKey for the session
 
 app.add_url_rule("/", view_func=views.index)
 app.add_url_rule("/election/<int:election_id>", view_func=views.election)
 app.add_url_rule("/result/<int:election_id>", view_func=views.result)
+app.add_url_rule("/confirm/<candidat_name>", view_func=views.confirm)
 app.add_url_rule("/api/fingerprint/", view_func=api.fingerprint,
                  methods=["POST"])
 app.add_url_rule("/api/make_choice/", view_func=api.make_choice,

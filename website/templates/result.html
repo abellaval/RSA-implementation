@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Result</title>
-</head>
-<body>
-<h1>Results of Election {{ election.id }}:</h1>
-<ul>
-    {% for result in election.results %}
-        <li> {{ result.candidate.name }} has {{ result.votes }} votes</li>
+{% extends 'base.html' %}
+
+{% block title %}Résultats{% endblock %}
+
+{% block body %}
+
+    <h3 style="text-align:center;">Liste de résultats</h3>
+
+    {% for election in elections %}
+        <div class="card border-primary mb-3">
+            <div class="card-header">
+                <h2>Election {{ election }}</h2>
+            </div>
+            <div class="card-body">
+                Résultat:
+            </div>
+        </div>
     {% endfor %}
-</ul>
-</body>
-</html>
+{% endblock %}

@@ -1,4 +1,5 @@
-from flask import render_template, request, make_response, redirect, url_for
+from flask import render_template, request, make_response, redirect, url_for, \
+    flash
 from database import get_db
 import models.dummy_data as dummy_data
 from website.admin import Admin
@@ -53,3 +54,9 @@ def result(election_id):
                            dummy_data.all_elections),
                     None)
     return render_template("result.html", election=election)
+
+
+def confirm(candidat_name):
+    message = "Votre vote pour " + candidat_name + " a été enregistré!"
+    flash(message, "info")
+    return redirect(url_for("index"))

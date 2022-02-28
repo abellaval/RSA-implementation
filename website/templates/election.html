@@ -1,16 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Election</title>
-</head>
-<body>
-<h1>Election Page</h1>
-<p>{{ election.id }}</p>
-<ul>
+{% extends 'base.html' %}
+
+{% block title %} Vote {% endblock %}
+
+{% block body %}
+    <h3 style="text-align:center;">Liste de candidats</h3>
+
+
     {% for candidate, candidate_number in election.candidates %}
-        <li>{{ candidate.name }}, {{ candidate_number }}</li>
+
+        <div class="card border-primary mb-3">
+            <div class="card-header">
+                <h2>"{{ candidate.name }}" </h2>
+            </div>
+            <div class="card-body">
+                [Description du candidat {{ candidate.name }}]
+            </div>
+            <div class="card-footer">
+                <form>
+                    <button type="submit" formaction="/confirm/{{ candidate.name }}" class="btn btn-outline-success">
+                        Voter
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
     {% endfor %}
-</ul>
-</body>
-</html>
+
+{% endblock %}

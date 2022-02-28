@@ -16,6 +16,8 @@ candidate_5 = Candidate(5, "candidate_name_5")
 candidate_6 = Candidate(6, "candidate_name_6")
 candidate_7 = Candidate(7, "candidate_name_7")
 
+all_candidates = [candidate_1, candidate_2, candidate_3, candidate_4, candidate_5, candidate_6, candidate_7]
+
 election_1 = Election(1, "election_name_1", "description_1",
                       [(candidate_1, 1),
                        (candidate_2, 2),

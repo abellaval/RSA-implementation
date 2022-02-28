@@ -1,18 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Client</title>
-    <script defer src="{{ url_for("static", filename="js/fingerprint.js") }}" type="module"></script>
-</head>
-<body>
-<h1>Client homepage</h1>
-<ul>
+{% extends 'base.html' %}
+
+{% block title %}Elections{% endblock %}
+
+<script defer src="{{ url_for("static", filename="js/fingerprint.js") }}" type="module"></script>
+
+{% block body %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <div id="popUp" class="alert alert-dismissible alert-success">
+                    <button id="closeBtn" type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {{ msg }} <a href="#" class="alert-link">see results</a>.
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <h3 style="text-align:center;">List of elections!</h3>
+
     {% for election_id, election_name, election_description in elections_info %}
-        <a href="{{ url_for("election", election_id=election_id) }}">
-            <li>{{ election_name }}, {{ election_description }}</li>
-        </a>
+        <div class="card border-primary mb-3">
+            <div class="card-header">
+                <h2>Election {{ election_name }}</h2>
+            </div>
+            <div class="card-body">
+                Description: {{ election_description }}
+            </div>
+            <div class="card-footer">
+                <form>
+                    <button type="submit" formaction="./election/{{ election_id }}" class="btn btn-outline-success">
+                        Participer
+                    </button>
+                </form>
+            </div>
+        </div>
     {% endfor %}
-</ul>
-</body>
-</html>
+{% endblock %}
+{% block script %}
+    <script>
+        function closeThisBtn() {
+            const popUpMsg = document.getElementById("popUp");
+            const btn = document.getElementById("closeBtn");
+            btn.onclick = function () {
+                if (popUpMsg.style.display !== "none") {
+                    console.log("close")
+                    popUpMsg.style.display = "none";
+                } else {
+                    popUpMsg.style.display = "block";
+                }
+            };
+        }
+
+        closeThisBtn()
+    </script>
+{% endblock %}
