@@ -9,14 +9,14 @@ def fingerprint():
     ttl_sec = 24 * 60 * 60
     response = make_response()
     response.set_cookie("fingerprint", _fingerprint, max_age=ttl_sec,
-                        httponly=True, secure=True)
+                        httponly=True, samesite="Strict")
     return response
 
 
 def make_choice():
     # TODO: what is the name of the vote_token field on the html?
     election_id = request.args.get("election_id", type=int)
-    blinded_choice = request.args.get("blinded_choice", type=int)
+    blinded_choice = request.args.get("blinded_choice")
     if election_id is None or blinded_choice is None:
         # incorrect format of params
         return redirect(url_for("index"), code=303)

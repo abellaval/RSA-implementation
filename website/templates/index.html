@@ -2,9 +2,9 @@
 
 {% block title %}Elections{% endblock %}
 
-<script defer src="{{ url_for("static", filename="js/fingerprint.js") }}" type="module"></script>
 
 {% block body %}
+    <script defer src="{{ url_for("static", filename="js/fingerprint.js") }}" type="module"></script>
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -28,30 +28,30 @@
                 Description: {{ election_description }}
             </div>
             <div class="card-footer">
-                <form>
-                    <button type="submit" formaction="./election/{{ election_id }}" class="btn btn-outline-success">
+                <a href="./election/{{ election_id }}">
+                    <button class="btn btn-outline-success">
                         Participer
                     </button>
-                </form>
+                </a>
             </div>
         </div>
     {% endfor %}
 {% endblock %}
 {% block script %}
-    <script>
-        function closeThisBtn() {
-            const popUpMsg = document.getElementById("popUp");
-            const btn = document.getElementById("closeBtn");
-            btn.onclick = function () {
-                if (popUpMsg.style.display !== "none") {
-                    console.log("close")
-                    popUpMsg.style.display = "none";
-                } else {
-                    popUpMsg.style.display = "block";
-                }
-            };
-        }
-
-        closeThisBtn()
-    </script>
+{#    <script>#}
+{#        function closeThisBtn() {#}
+{#            const popUpMsg = document.getElementById("popUp");#}
+{#            const btn = document.getElementById("closeBtn");#}
+{#            btn.onclick = function () {#}
+{#                if (popUpMsg.style.display !== "none") {#}
+{#                    console.log("close")#}
+{#                    popUpMsg.style.display = "none";#}
+{#                } else {#}
+{#                    popUpMsg.style.display = "block";#}
+{#                }#}
+{#            };#}
+{#        }#}
+{##}
+{#        closeThisBtn()#}
+{#    </script>#}
 {% endblock %}

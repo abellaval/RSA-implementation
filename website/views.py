@@ -35,7 +35,7 @@ def election(election_id):
                     None)
     # TODO: set hidden vote token for the election (basically set a hidden
     #  input field in the html)
-    return render_template("election.html", election=election)
+    return render_template("election.html", election=election, vote_token=vote_token)
 
 
 def result(election_id):
