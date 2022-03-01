@@ -15,19 +15,19 @@ class PrimeShow(Scene):
         self.play(Write(n))
 
         f = Tex("$8$")
-        fd = Tex("$( 8 * 1 )$")
+        fd = Tex("$( 8 \\times 1 )$")
         self.showFactor(n, f, fd, 3)
 
         f = Tex("$4$")
-        fd = Tex("$( 4 * 2 )$")
+        fd = Tex("$( 4 \\times 2 )$")
         self.showFactor(n, f, fd, 1)
 
         f = Tex("$2$")
-        fd = Tex("$( 2 * 4 )$")
+        fd = Tex("$( 2 \\times 4 )$")
         self.showFactor(n, f, fd, -1)
 
         f = Tex("$1$")
-        fd = Tex("$( 1 * 8 )$")
+        fd = Tex("$( 1 \\times 8 )$")
         self.showFactor(n, f, fd, -3)
 
         self.play(Write(text))
@@ -41,11 +41,11 @@ class PrimeShow(Scene):
         self.play(Write(n))
 
         f = Tex("$5$")
-        fd = Tex("$( 5 * 1 )$")
+        fd = Tex("$( 5 \\times 1 )$")
         self.showFactor(n, f, fd, 2)
 
         f = Tex("$1$")
-        fd = Tex("$( 1 * 5 )$")
+        fd = Tex("$( 1 \\times 5 )$")
         self.showFactor(n, f, fd, -2)
 
         self.play(Write(text))
@@ -63,5 +63,5 @@ class PrimeShow(Scene):
 
         g = VGroup(f, fd)
         g.generate_target()
-        g.target.shift(2 * DOWN); g.target.shift(move * LEFT)
+        g.target.shift(2 \\times DOWN); g.target.shift(move \\times LEFT)
         self.play(MoveToTarget(g))
