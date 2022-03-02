@@ -7,6 +7,7 @@ class FactoriseShow(Scene):
     def construct(self):
 
         self.showFactoriseDanger()
+        self.clear()
         self.showFactoriseIsEasyForSmall()
         self.clear()
         self.showFactoriseIsHard()
