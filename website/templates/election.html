@@ -17,10 +17,10 @@
                 [Description du candidat {{ candidate.name }}]
             </div>
             <div class="card-footer">
-                <form name="candidate:{{ candidate_number }}" id="form:{{ candidate_number }}" action="/confirm/{{ candidate.name }}" onsubmit="onSubmit(this);">
-                    <input type="hidden" id="election_id" name="election_id" value="{{ election.id }}">
-                    <input type="hidden" id="vote_token" name="vote_token" value="{{ vote_token }}">
-                    <input type="hidden" id="blinded_choice" name="blinded_choice" value="{{ candidate_number }}">
+                <form name="candidate:{{ candidate_number }}" id="form:{{ candidate_number }}" action="/api/make_choice/" onsubmit="onSubmitToAdmin(this);" method="post">
+                    <input type="hidden" id="election_id" name="election_id" value={{ election.id }}>
+                    <input type="hidden" id="vote_token" name="vote_token" value={{ vote_token }}>
+                    <input type="hidden" id="blinded_choice" name="blinded_choice" value={{ candidate_number }}>
                     <button type="submit" class="btn btn-outline-success">
                         Voter
                     </button>

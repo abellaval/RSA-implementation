@@ -14,6 +14,11 @@ function getBlindingFactor() {
     return rngVal
 }
 
-function onSubmit(form) {
+function onSubmitToAdmin(form) {
     form.elements.blinded_choice.value *= getBlindingFactor()
+}
+
+function onSubmitToBallot(form) {
+    blinding_factor = getBlindingFactor()
+    // TODO: remove blinding factor from the signed choice
 }

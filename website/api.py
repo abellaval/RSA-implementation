@@ -1,4 +1,4 @@
-from flask import request, make_response, redirect, url_for
+from flask import request, make_response, redirect, url_for, render_template
 from fingerprint import generate_fingerprint
 from website.admin import Admin
 from website.ballot import Ballot
@@ -15,12 +15,12 @@ def fingerprint():
 
 def make_choice():
     # TODO: what is the name of the vote_token field on the html?
-    election_id = request.args.get("election_id", type=int)
-    blinded_choice = request.args.get("blinded_choice")
+    election_id = request.form.get("election_id", type=int)
+    blinded_choice = request.form.get("blinded_choice", type=int)
     if election_id is None or blinded_choice is None:
         # incorrect format of params
         return redirect(url_for("index"), code=303)
-    vote_token = request.form.get("vote_token")
+    vote_token = request.form.get("vote_token", type=int)
     if vote_token is None:
         # somehow we are trying to make a choice with no vote_token, deny and
         # redirect
@@ -34,17 +34,24 @@ def make_choice():
         # the client tampered with his vote_token
         return redirect(url_for("election", election_id=election_id), code=303)
     # TODO: sign the blinded choice
+    signed_choice = blinded_choice
     # TODO: send signed choice to client
+    return render_template("send_to_ballot.html",
+                           election_id=election_id,
+                           vote_token=vote_token,
+                           signed_choice=signed_choice)
 
 
 def send_choice():
-    election_id = request.args.get("election_id")
-    choice = request.args.get("choice")
-    vote_token = request.form.get("vote_token")
-    if election_id is None or choice is None or vote_token is None:
+    election_id = request.form.get("election_id", type=int)
+    signed_choice = request.form.get("signed_choice")
+    vote_token = request.form.get("vote_token", type=int)
+    if election_id is None or signed_choice is None or vote_token is None:
         # incorrect format of params
         return redirect(url_for("index"), code=303)
     ballot = Ballot.get_ballot()
-    ballot.put(election_id, vote_token, choice)
+    # TODO: check signature
+    ballot.put(election_id, vote_token, signed_choice)
+    # TODO: put the flash message in result instead of index?
     return redirect(url_for("result", election_id=election_id), code=303)
 
