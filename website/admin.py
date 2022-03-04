@@ -1,4 +1,5 @@
 from flask import g
+import models.dummy_data as dummy_data
 
 
 class Admin:
@@ -26,3 +27,12 @@ class Admin:
         """Notify admin that vote_token has voted for election"""
         # TODO: implement
         pass
+
+    def get_all_elections(self):
+        # TODO: Use DB instead
+        return dummy_data.all_elections
+
+    def get_election_by_id(self, election_id):
+        # TODO: Use DB instead
+        return next(filter(lambda election: election.id == election_id,
+                           dummy_data.all_elections), None)

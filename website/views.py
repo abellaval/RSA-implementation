@@ -6,16 +6,9 @@ from website.admin import Admin
 
 
 def index():
-    # TODO: use data from a database fetch
-    elections_info = [
-        (dummy_data.election_1.id, dummy_data.election_1.name,
-         dummy_data.election_1.description),
-        (dummy_data.election_2.id, dummy_data.election_2.name,
-         dummy_data.election_2.description),
-        (dummy_data.election_3.id, dummy_data.election_3.name,
-         dummy_data.election_3.description),
-    ]
-    return render_template("index.html", elections_info=elections_info)
+    admin = Admin.get_admin()
+    all_elections = admin.get_all_elections()
+    return render_template("index.html", all_elections=all_elections)
 
 
 def election(election_id):
@@ -28,14 +21,9 @@ def election(election_id):
     if vote_token is None:
         # This client has already voted, redirect to result of election
         return redirect(url_for("result", election_id=election_id), code=303)
-    # TODO: fetch data from database
-    election = next(filter(lambda election:
-                           election.id == election_id,
-                           dummy_data.all_elections),
-                    None)
-    # TODO: set hidden vote token for the election (basically set a hidden
-    #  input field in the html)
-    return render_template("election.html", election=election, vote_token=vote_token)
+    election = admin.get_election_by_id(election_id)
+    return render_template("election.html", election=election,
+                           vote_token=vote_token)
 
 
 def result(election_id):
@@ -45,15 +33,12 @@ def result(election_id):
         return redirect(url_for("index"), code=303)
     admin = Admin.get_admin()
     vote_token = admin.get_vote_token(election_id, fingerprint)
-    if vote_token is not None:
-        # This client hasn't voted, redirect to choices for election
-        return redirect(url_for("election", election_id=election_id), code=303)
-    # TODO: fetch data from database
-    election = next(filter(lambda election:
-                           election.id == election_id,
-                           dummy_data.all_elections),
-                    None)
-    return render_template("result.html", election=election)
+    # FIXME: commented for testing
+    # if vote_token is not None:
+    #     # This client hasn't voted, redirect to choices for election
+    #     return redirect(url_for("election", election_id=election_id), code=303)
+    election = admin.get_election_by_id(election_id)
+    return render_template("result.html", results=election.results)
 
 
 def confirm(candidat_name):

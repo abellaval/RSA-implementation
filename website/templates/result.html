@@ -6,13 +6,13 @@
 
     <h3 style="text-align:center;">Liste de résultats</h3>
 
-    {% for election in elections %}
+    {% for result in results %}
         <div class="card border-primary mb-3">
             <div class="card-header">
-                <h2>Election {{ election }}</h2>
+                <h2>Candidat {{ result.candidate.name }}</h2>
             </div>
             <div class="card-body">
-                Résultat:
+                Résultat: {{ result.votes }}
             </div>
         </div>
     {% endfor %}

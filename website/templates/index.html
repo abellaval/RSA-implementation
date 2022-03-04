@@ -19,16 +19,16 @@
 
     <h3 style="text-align:center;">List of elections!</h3>
 
-    {% for election_id, election_name, election_description in elections_info %}
+    {% for election in all_elections %}
         <div class="card border-primary mb-3">
             <div class="card-header">
-                <h2>Election {{ election_name }}</h2>
+                <h2>Election {{ election.name }}</h2>
             </div>
             <div class="card-body">
-                Description: {{ election_description }}
+                Description: {{ election.description }}
             </div>
             <div class="card-footer">
-                <a href="./election/{{ election_id }}">
+                <a href="./election/{{ election.id }}">
                     <button class="btn btn-outline-success">
                         Participer
                     </button>
