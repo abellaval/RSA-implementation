@@ -55,3 +55,14 @@ def send_choice():
     # TODO: put the flash message in result instead of index?
     return redirect(url_for("result", election_id=election_id), code=303)
 
+
+def refresh_results():
+    fingerprint = request.cookies.get("fingerprint")
+    admin = Admin.get_admin()
+    # TODO: check if fingerprint has voted before giving results
+    election = admin.get_election_by_id(request.args.get("election_id",
+                                                         type=int))
+    resp = dict((result.candidate.id, result.votes) for result in election.results)
+    return resp
+
+

@@ -4,6 +4,7 @@
 
 {% block body %}
 
+    <script src="{{ url_for("static", filename="js/fetchResults.js") }}" type="text/javascript"></script>
     <h3 style="text-align:center;">Liste de résultats</h3>
 
     {% for result in results %}
@@ -12,8 +13,9 @@
                 <h2>Candidat {{ result.candidate.name }}</h2>
             </div>
             <div class="card-body">
-                Résultat: {{ result.votes }}
+                Résultat: <span id={{ result.candidate.id }}>{{ 0 }}</span>
             </div>
         </div>
     {% endfor %}
+    <script>setInterval(fetchResults, 3000, {{ results[0].election_id }})</script>
 {% endblock %}

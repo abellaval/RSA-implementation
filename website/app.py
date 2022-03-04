@@ -18,6 +18,9 @@ app.add_url_rule("/api/make_choice/", view_func=api.make_choice,
                  methods=["POST"])
 app.add_url_rule("/api/send_choice/", view_func=api.send_choice,
                  methods=["POST"])
+app.add_url_rule("/api/refresh_results/", view_func=api.refresh_results,
+                 methods=["GET"])
+
 app.teardown_appcontext_funcs.append(database.clone_connection)
 
 scheduler = APScheduler()
