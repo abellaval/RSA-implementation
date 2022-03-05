@@ -14,7 +14,6 @@ def fingerprint():
 
 
 def make_choice():
-    # TODO: what is the name of the vote_token field on the html?
     election_id = request.form.get("election_id", type=int)
     blinded_choice = request.form.get("blinded_choice", type=int)
     if election_id is None or blinded_choice is None:
@@ -35,7 +34,6 @@ def make_choice():
         return redirect(url_for("election", election_id=election_id), code=303)
     # TODO: sign the blinded choice
     signed_choice = blinded_choice
-    # TODO: send signed choice to client
     return render_template("send_to_ballot.html",
                            election_id=election_id,
                            vote_token=vote_token,

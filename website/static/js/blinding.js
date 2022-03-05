@@ -15,10 +15,12 @@ function getBlindingFactor() {
 }
 
 function onSubmitToAdmin(form) {
-    form.elements.blinded_choice.value *= getBlindingFactor()
+    // TODO: add blind factor
+    // form.elements.blinded_choice.value *= getBlindingFactor()
 }
 
 function onSubmitToBallot(form) {
     blinding_factor = getBlindingFactor()
     // TODO: remove blinding factor from the signed choice
+    // form.elements.signed_choice.value /= blinding_factor
 }
