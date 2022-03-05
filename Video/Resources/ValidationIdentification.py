@@ -45,7 +45,8 @@ class ValidationIdentification(Scene):
         
         self.play(FadeIn(check))
         self.wait(2)
-        self.play(FadeOut(check))
+        self.play(FadeOut(check), FadeOut(finger_print))
+
 
         self.play(FadeIn(card))
 
