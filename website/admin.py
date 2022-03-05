@@ -1,3 +1,5 @@
+from hashlib import sha512
+
 from flask import g
 import database
 from website.models.candidate import Candidate
@@ -18,18 +20,44 @@ class Admin:
         return admin
 
     def get_vote_token(self, election_id, fingerprint):
-        # TODO: check in DB if fingerprint has already voted, if not return
-        #  vote token, if already voted return None
-        # FIXME: This is dummy data
-        if election_id == 1:
-            return 123
+        db = database.get_db()
+        vote_token_query = f"""
+        SELECT fp.vote_token, s.is_signed
+        FROM fingerprint fp
+        JOIN signature s ON fp.vote_token = s.vote_token
+        WHERE election_id = {election_id} AND fp.fingerprint = '{fingerprint}'
+        """
+        if (res := db.execute(vote_token_query).fetchone()) is None:
+            # let's hope this is unique enough
+            vote_token = sha512(
+                (str(election_id) + fingerprint).encode("ascii")
+            ).hexdigest()
+            set_token_query = f"""
+            INSERT INTO fingerprint (election_id, fingerprint, vote_token)
+            VALUES ({election_id}, '{fingerprint}', '{vote_token}');
+            """
+            set_not_signed_query = f"""
+            INSERT INTO signature (vote_token, is_signed)
+            VALUES ('{vote_token}', {0});
+            """
+            db.execute(set_token_query)
+            db.execute(set_not_signed_query)
+            db.commit()
+            return vote_token
         else:
-            return None
+            vote_token, is_signed = res
+            return vote_token if not is_signed else None
 
     def notify(self, election_id, vote_token):
         """Notify admin that vote_token has voted for election"""
-        # TODO: implement
-        pass
+        db = database.get_db()
+        query = f"""
+        UPDATE signature
+        SET is_signed=1
+        WHERE vote_token = '{vote_token}'
+        """
+        db.execute(query)
+        db.commit()
 
     def get_all_elections(self):
         db = database.get_db()

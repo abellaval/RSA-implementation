@@ -19,7 +19,7 @@ def make_choice():
     if election_id is None or blinded_choice is None:
         # incorrect format of params
         return redirect(url_for("index"), code=303)
-    vote_token = request.form.get("vote_token", type=int)
+    vote_token = request.form.get("vote_token", type=str)
     if vote_token is None:
         # somehow we are trying to make a choice with no vote_token, deny and
         # redirect
@@ -43,7 +43,7 @@ def make_choice():
 def send_choice():
     election_id = request.form.get("election_id", type=int)
     signed_choice = request.form.get("signed_choice")
-    vote_token = request.form.get("vote_token", type=int)
+    vote_token = request.form.get("vote_token", type=str)
     if election_id is None or signed_choice is None or vote_token is None:
         # incorrect format of params
         return redirect(url_for("index"), code=303)
