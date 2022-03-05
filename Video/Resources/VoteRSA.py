@@ -24,11 +24,14 @@ class VoteRSA(Scene):
 		decompte = Tex("Décompte").next_to(decompte_img.get_top(), UP)
 		urne = Tex("Urne").next_to(urne_img.get_top(), UP)
 
-		key = ImageMobject(f"{HOME}KeyWhite.png").scale(0.3).next_to(decompte_img.get_bottom() - np.array([0.5, 0.5, 0]), DOWN)
-		lock_open = ImageMobject(f"{HOME}LockOpenWhite.png").scale(0.3).next_to(decompte_img.get_bottom() - np.array([-0.5, 0.5, 0]), DOWN)
+		key = ImageMobject(f"{HOME}KeyWhite.png").scale(0.3).next_to(decompte_img.get_bottom() - np.array([0.5, 0, 0]), DOWN)
+		lock_open = ImageMobject(f"{HOME}LockOpenWhite.png").scale(0.3).next_to(decompte_img.get_bottom() + np.array([0.5, 0, 0]), DOWN)
+
+		self.play(FadeIn(client_img1), FadeIn(client_img2), FadeIn(client_img3), FadeIn(client_img4), FadeIn(client_img5), Write(client))
 
 		self.play(FadeIn(admin_img), FadeIn(decompte_img), FadeIn(urne_img), Write(amdin), Write(urne), Write(decompte))
 
-		self.play(FadeIn(client_img1), FadeIn(client_img2), FadeIn(client_img3), FadeIn(client_img4), FadeIn(client_img5), Write(client))
 		self.play(FadeIn(key), FadeIn(lock_open))
 		self.play(lock_open.animate.next_to(admin_img.get_bottom(), DOWN), run_time=3)
+
+		self.wait(5)
