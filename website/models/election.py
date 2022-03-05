@@ -16,7 +16,6 @@ class Election:
                  name: str,
                  description: str,
                  candidates: Collection[CandidateForElection],
-                 already_voted: Collection[Voter],
                  results: Collection[Result] = None):
         if results is None:
             results = []
@@ -24,5 +23,4 @@ class Election:
         self.name = name
         self.description = description
         self.candidates = candidates
-        self.already_voted= already_voted
         self.results = results

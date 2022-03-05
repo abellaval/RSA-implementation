@@ -1,5 +1,8 @@
 from flask import g
-import models.dummy_data as dummy_data
+import database
+from website.models.candidate import Candidate
+from website.models.election import Election
+from website.models.result import Result
 
 
 class Admin:
@@ -29,10 +32,54 @@ class Admin:
         pass
 
     def get_all_elections(self):
-        # TODO: Use DB instead
-        return dummy_data.all_elections
+        db = database.get_db()
+        election_query = """
+        SELECT * 
+        FROM election
+        """
+        all_elections = []
+        for election_row in db.execute(election_query):
+            election_id, election_name, election_desc = election_row
+            candidate_query = f"""
+            SELECT c.id, name, description, vote_number
+            FROM candidate c
+            JOIN candidate_in_election cie on c.id = cie.candidate_id
+            WHERE cie.election_id = {election_id}
+            """
+            candidates_in_election = []
+            for candidate_row in db.execute(candidate_query):
+                candidates_in_election.append(
+                    (Candidate(*candidate_row[:-1]), candidate_row[-1])
+                )
+            result_query = f"""
+            SELECT candidate_id, vote_count
+            FROM result r
+            JOIN candidate_in_election cie ON r.election_candidate_id = cie.id
+            WHERE election_id = {election_id}
+            """
+            results_for_election = []
+            for result_row in db.execute(result_query):
+                candidate_id, vote_count = result_row
+                results_for_election.append(
+                    Result(
+                        election_id,
+                        next(candidate for candidate, _ in
+                             candidates_in_election
+                             if candidate.id == candidate_id),
+                        vote_count
+                    )
+                )
+            all_elections.append(
+                Election(
+                    election_id,
+                    election_name,
+                    election_desc,
+                    candidates_in_election,
+                    results_for_election
+                )
+            )
+        return all_elections
 
     def get_election_by_id(self, election_id):
-        # TODO: Use DB instead
         return next(filter(lambda election: election.id == election_id,
-                           dummy_data.all_elections), None)
+                           self.get_all_elections()), None)

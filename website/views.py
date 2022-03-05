@@ -1,7 +1,6 @@
 from flask import render_template, request, make_response, redirect, url_for, \
     flash
 from database import get_db
-import models.dummy_data as dummy_data
 from website.admin import Admin
 
 

@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS election(
 
 CREATE TABLE IF NOT EXISTS candidate (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    description TEXT
 );
 
 CREATE TABLE IF NOT EXISTS voter (
@@ -17,8 +18,7 @@ CREATE TABLE IF NOT EXISTS voter (
 
 CREATE TABLE IF NOT EXISTS result(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    election_id INTEGER REFERENCES election(id),
-    candidate_id INTEGER REFERENCES candidate(id),
+    election_candidate_id INTEGER REFERENCES candidate_in_election(id),
     vote_count INTEGER NOT NULL
 );
 
@@ -40,4 +40,11 @@ CREATE TABLE IF NOT EXISTS election_keys(
     election_id INTEGER REFERENCES election(id),
     SK TEXT NOT NULL,
     PK TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS election_candidate(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    election_id INTEGER REFERENCES election(id),
+    candidate_id INTEGER REFERENCES candidate(id),
+    vote_number INTEGER NOT NULL
 );
