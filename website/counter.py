@@ -1,4 +1,4 @@
-from flask import g
+counter = None
 
 
 class Counter:
@@ -8,10 +8,10 @@ class Counter:
 
     @staticmethod
     def get_counter():
-        counter = getattr(g, "counter", None)
+        global counter
         if counter is None:
             # TODO: replace the None tuple with RSA keys
-            counter = g.admin = Counter((None, None))
+            counter = Counter((None, None))
         return counter
 
     def recieve_votes(self, votes):

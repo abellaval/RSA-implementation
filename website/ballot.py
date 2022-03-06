@@ -1,9 +1,9 @@
 from copy import deepcopy
 
-from flask import g
-
 from website.admin import Admin
 from website.counter import Counter
+
+ballot = None
 
 
 class Ballot:
@@ -12,9 +12,9 @@ class Ballot:
 
     @staticmethod
     def get_ballot():
-        ballot = getattr(g, "ballot", None)
+        global ballot
         if ballot is None:
-            ballot = g.ballot = Ballot()
+            ballot = Ballot()
         return ballot
 
     @staticmethod
@@ -23,12 +23,13 @@ class Ballot:
         with scheduler.app.app_context():
             # TODO: remove the print on deploy
             print("Ballot tick")
-            counter = Counter.get_counter()
             ballot = Ballot.get_ballot()
-            counter.recieve_votes(deepcopy(ballot.content))
-            ballot.content.clear()
+            if ballot.content:
+                counter = Counter.get_counter()
+                counter.recieve_votes(deepcopy(ballot.content))
+                ballot.content.clear()
 
     def put(self, election_id, vote_token, choice):
         admin = Admin.get_admin()
         admin.notify(election_id, vote_token)
-        self.content.append((election_id, vote_token, choice))
+        self.content.append((election_id, choice))

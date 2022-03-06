@@ -1,10 +1,11 @@
 from hashlib import sha512
 
-from flask import g
 import database
 from website.models.candidate import Candidate
 from website.models.election import Election
 from website.models.result import Result
+
+admin = None
 
 
 class Admin:
@@ -13,10 +14,10 @@ class Admin:
 
     @staticmethod
     def get_admin():
-        admin = getattr(g, "admin", None)
+        global admin
         if admin is None:
             # TODO: replace the None tuple with RSA keys
-            admin = g.admin = Admin((None, None))
+            admin = Admin((None, None))
         return admin
 
     def get_vote_token(self, election_id, fingerprint):
