@@ -1,3 +1,5 @@
+import database
+
 counter = None
 
 
@@ -20,9 +22,28 @@ class Counter:
         self.count_votes()
 
     def count_votes(self):
-        # TODO: implement
         # count votes
+        votes = dict()
+        for election_id, choice in self.content:
+            # TODO: decrypt vote when RSA is implemented
+            election_votes = votes.setdefault(election_id, dict())
+            candidate_votes_for_election = election_votes.setdefault(choice, 0)
+            election_votes[choice] = candidate_votes_for_election + 1
         # save to DB
-        # then notify admin of new results
-        pass
+        db = database.get_db()
+        for election_id, candidates_votes in votes.items():
+            for candidate, new_votes in candidates_votes.items():
+                query = f"""
+                UPDATE result
+                SET vote_count = vote_count + {new_votes}
+                FROM (
+                         SELECT cie.id
+                         FROM candidate_in_election cie
+                         WHERE election_id = {election_id}
+                           AND vote_number = {candidate}
+                     ) AS lookup
+                WHERE lookup.id = result.election_candidate_id
+                """
+                db.execute(query)
+        db.commit()
 
