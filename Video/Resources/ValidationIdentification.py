@@ -66,6 +66,10 @@ class ValidationIdentification(Scene):
 
         self.play(pack.animate.next_to(bob.get_right(), RIGHT))
 
+        self.wait(2)
+
+        self.play(FadeOut(pack))
+
 
 
         self.wait(5)
