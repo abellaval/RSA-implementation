@@ -10,12 +10,6 @@ CREATE TABLE IF NOT EXISTS candidate (
     description TEXT
 );
 
-CREATE TABLE IF NOT EXISTS voter (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    election_id INTEGER REFERENCES election(id),
-    vote_token TEXT NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS result(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     election_candidate_id INTEGER REFERENCES candidate_in_election(id),
@@ -42,7 +36,7 @@ CREATE TABLE IF NOT EXISTS election_keys(
     PK TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS election_candidate(
+CREATE TABLE IF NOT EXISTS candidate_in_election(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     election_id INTEGER REFERENCES election(id),
     candidate_id INTEGER REFERENCES candidate(id),
