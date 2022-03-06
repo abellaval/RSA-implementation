@@ -12,7 +12,7 @@ admin = None
 class Admin:
     def __init__(self, signature_keypair):
         self.signature_secret_key, self.signature_public_key = signature_keypair
-        self.elections_public_key = {}
+        self.elections_public_key = dict()
 
     @staticmethod
     def get_admin():
@@ -124,5 +124,5 @@ class Admin:
             query = f"""
             SELECT ek.PK FROM election_keys ek WHERE ek.election_id = {election_id} 
             """
-            pk = db.execute(query).fetchone()
+            pk = db.execute(query).fetchone()[0]
         return pk

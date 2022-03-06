@@ -15,7 +15,7 @@ def fingerprint():
 
 def make_choice():
     election_id = request.form.get("election_id", type=int)
-    blinded_choice = request.form.get("blinded_choice", type=int)
+    blinded_choice = request.form.get("blinded_choice", type=str)
     if election_id is None or blinded_choice is None:
         # incorrect format of params
         return redirect(url_for("index"), code=303)

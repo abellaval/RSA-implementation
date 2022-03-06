@@ -1,4 +1,5 @@
 import database
+import crypto.RSA as RSA
 
 counter = None
 
@@ -7,11 +8,11 @@ class Counter:
     def __init__(self):
         db = database.get_db()
         query = f"SELECT ek.election_id, ek.SK FROM election_keys ek"
-        self.elections_secret_key = {
+        self.elections_secret_key = dict(
             (election_id, sk)
             for election_id, sk
             in db.execute(query)
-        }
+        )
 
     @staticmethod
     def get_counter():
@@ -28,6 +29,10 @@ class Counter:
         votes_by_election = dict()
         for election_id, choice in votes:
             # TODO: decrypt vote when RSA is implemented
+            choice = int(RSA.Decrypt(
+                choice,
+                *(map(int, self.elections_secret_key[election_id].split('$')))
+            ))
             election_votes = votes_by_election.setdefault(election_id, dict())
             candidate_votes_for_election = election_votes.setdefault(choice, 0)
             election_votes[choice] = candidate_votes_for_election + 1

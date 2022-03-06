@@ -43,7 +43,7 @@ def KeyGen(k):
     if d < 0: d += phi
 
     t2 = time()
-    return ((N, e), (N, d), p, q, phi, int(t2 - t1))
+    return ((e, N), (d, N), p, q, phi, int(t2 - t1))
 
 
 def E(M, e, N):
@@ -92,7 +92,7 @@ def display_help():
 
 def main():
     k = int(input("Security parameter (size of N in bits) : "))
-    ((N, e), (N, d), p, q, phi, t) = KeyGen(k)
+    ((e, N), (d, N), p, q, phi, t) = KeyGen(k)
 
     print(
         f"{'-' * 20}\nN : {int(log(N, 2)) + 1}-bits\nlog(N)/6 : {int(log(N, 2) / 6) + 1} caractères maximum par message\nGénération des clefs : {t} secondes\n{'-' * 20}\n\n")
@@ -123,5 +123,5 @@ if __name__ == "__main__":
         main()  # Génération des clefs et ersatz d'UI
     else:
         k = 32
-        ((N, e), (N, d), p, q, phi, t) = KeyGen(
+        ((e, N), (d, N), p, q, phi, t) = KeyGen(
             k)  # Generation des clefs et c'est tout

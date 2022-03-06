@@ -2,6 +2,7 @@ from flask import render_template, request, make_response, redirect, url_for, \
     flash
 from database import get_db
 from website.admin import Admin
+import crypto.RSA as RSA
 
 
 def index():
@@ -21,8 +22,22 @@ def election(election_id):
         # This client has already voted, redirect to result of election
         return redirect(url_for("result", election_id=election_id), code=303)
     election = admin.get_election_by_id(election_id)
+    election_pk = admin.get_election_public_key(election_id)
+    # TODO: if we have the time swith to encryption on JS side
+    encrypted_candidate_numbers = dict(
+        (
+            candidate_number,
+            RSA.Encrypt(
+                str(candidate_number),
+                *(map(int, election_pk.split('$')))
+            )
+        )
+        for _, candidate_number in election.candidates
+    )
+
     return render_template("election.html", election=election,
-                           vote_token=vote_token)
+                           vote_token=vote_token,
+                           encrypted_candidate_number=encrypted_candidate_numbers)
 
 
 def result(election_id):
