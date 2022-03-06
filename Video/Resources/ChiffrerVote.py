@@ -71,8 +71,8 @@ class ChiffrerVote(Scene):
 
         self.wait(2)
 
-        pack_de_packs = ImageMobject(f"{HOME}Product-256.png").scale(0.5).next_to(urne.get_top(), UP)
-        cadena_ferme_de_packs = ImageMobject(f"{HOME}LockClosedRed.png").scale(0.3).next_to(pack_de_packs.get_center() + np.array([0.5, 0.5, 0]), ORIGIN)
+        pack_de_packs = ImageMobject(f"{HOME}Product-256.png").scale(0.7).next_to(urne.get_top(), UP)
+        cadena_ferme_de_packs = ImageMobject(f"{HOME}LockClosedRed.png").scale(0.4).next_to(pack_de_packs.get_center() + np.array([0.5, 0.5, 0]), ORIGIN)
 
         self.play(FadeIn(pack_de_packs), FadeIn(cadena_ferme_de_packs))
 
@@ -96,10 +96,10 @@ class ChiffrerVote(Scene):
 
         self.play(FadeIn(pack_1), FadeIn(pack_2), FadeIn(pack_3), FadeIn(cadena_ferme_1), FadeIn(cadena_ferme_2), FadeIn(cadena_ferme_3))
 
+        self.play(pack_1.animate.next_to(decompte_img.get_left() - np.array([0.5, 0, 0]), LEFT), pack_2.animate.next_to(decompte_img.get_left() - np.array([0.7, -0.5, 0]), UL), pack_3.animate.next_to(decompte_img.get_left() - np.array([0.7, 0.5, 0]), DL), cadena_ferme_1.animate.next_to(decompte_img.get_left() - np.array([0.3, -0.5, 0]), LEFT), cadena_ferme_2.animate.next_to(decompte_img.get_left() - np.array([0.5, -0.9, 0]), UL), cadena_ferme_3.animate.next_to(decompte_img.get_left() - np.array([0.5, 0.3, 0]), DL))
 
-
-        self.play(pack_1.animate.next_to(decompte_img.get_left(), LEFT), pack_2.animate.next_to(decompte_img.get_left, UL), cadena_ferme_2.animate.next_to(decompte_img.get_left() + np.array([0.2, 0.3, 0]), UL), pack_3.animate.next_to(decompte_img.get_left(), DL), cadena_ferme_3.animate.next_to(decompte_img.get_left() + np.array([0.2, 0.2, 0]), DL))
-
+        self.play(FadeOut(pack_de_packs), FadeOut(cadena_ferme_de_packs))
+        
         pos_init_clef = decompte_img.get_center()   
         clef = ImageMobject(f"{HOME}KeyWhite.png").scale(0.2).next_to(pos_init_clef, ORIGIN)
 
