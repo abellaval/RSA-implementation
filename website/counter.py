@@ -4,38 +4,40 @@ counter = None
 
 
 class Counter:
-    def __init__(self, key_pair):
-        self.content = []
-        self.sk_key, self.pk_key = key_pair
+    def __init__(self):
+        db = database.get_db()
+        query = f"SELECT ek.election_id, ek.SK FROM election_keys ek"
+        self.elections_secret_key = {
+            (election_id, sk)
+            for election_id, sk
+            in db.execute(query)
+        }
 
     @staticmethod
     def get_counter():
         global counter
         if counter is None:
-            # TODO: replace the None tuple with RSA keys
-            counter = Counter((None, None))
+            counter = Counter()
         return counter
 
     def recieve_votes(self, votes):
-        for vote in votes:
-            self.content.append(vote)
-        self.count_votes()
+        self.count_votes(votes)
 
-    def count_votes(self):
+    def count_votes(self, votes):
         # count votes
-        votes = dict()
-        for election_id, choice in self.content:
+        votes_by_election = dict()
+        for election_id, choice in votes:
             # TODO: decrypt vote when RSA is implemented
-            election_votes = votes.setdefault(election_id, dict())
+            election_votes = votes_by_election.setdefault(election_id, dict())
             candidate_votes_for_election = election_votes.setdefault(choice, 0)
             election_votes[choice] = candidate_votes_for_election + 1
         # save to DB
         db = database.get_db()
-        for election_id, candidates_votes in votes.items():
-            for candidate, new_votes in candidates_votes.items():
+        for election_id, candidates_votes in votes_by_election.items():
+            for candidate, new_votes_for_candidate in candidates_votes.items():
                 query = f"""
                 UPDATE result
-                SET vote_count = vote_count + {new_votes}
+                SET vote_count = vote_count + {new_votes_for_candidate}
                 FROM (
                          SELECT cie.id
                          FROM candidate_in_election cie
@@ -46,4 +48,3 @@ class Counter:
                 """
                 db.execute(query)
         db.commit()
-

@@ -4,6 +4,7 @@ import database
 from website.models.candidate import Candidate
 from website.models.election import Election
 from website.models.result import Result
+import crypto.RSA as RSA
 
 admin = None
 
@@ -11,13 +12,17 @@ admin = None
 class Admin:
     def __init__(self, signature_keypair):
         self.signature_secret_key, self.signature_public_key = signature_keypair
+        self.elections_public_key = {}
 
     @staticmethod
     def get_admin():
         global admin
         if admin is None:
-            # TODO: replace the None tuple with RSA keys
-            admin = Admin((None, None))
+            # TODO: estimate k based on the size of the message
+            sk, pk, _, _, _, _ = RSA.KeyGen(k=32)
+            sk = f"{sk[0]}${sk[1]}"
+            pk = f"{pk[0]}${pk[1]}"
+            admin = Admin((sk, pk))
         return admin
 
     def get_vote_token(self, election_id, fingerprint):
@@ -112,3 +117,12 @@ class Admin:
     def get_election_by_id(self, election_id):
         return next(filter(lambda election: election.id == election_id,
                            self.get_all_elections()), None)
+
+    def get_election_public_key(self, election_id):
+        if (pk := self.elections_public_key.get(election_id)) is None:
+            db = database.get_db()
+            query = f"""
+            SELECT ek.PK FROM election_keys ek WHERE ek.election_id = {election_id} 
+            """
+            pk = db.execute(query).fetchone()
+        return pk
