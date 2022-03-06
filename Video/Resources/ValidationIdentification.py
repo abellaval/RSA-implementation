@@ -70,6 +70,4 @@ class ValidationIdentification(Scene):
 
         self.play(FadeOut(pack))
 
-
-
         self.wait(5)

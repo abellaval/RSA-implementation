@@ -1,5 +1,6 @@
 from fnmatch import fnmatch
 from signal import signal
+from tkinter import Pack
 from manim import *
 
 HOME = "Icons/"
@@ -9,7 +10,7 @@ class ChiffrerVote(Scene):
     def construct(self):
         default_buff = 0.5
         
-        bob = ImageMobject(f"{HOME}Men.png").scale(1).to_edge(LEFT, buff=default_buff)
+        bob_img = ImageMobject(f"{HOME}Men.png").scale(0.7).to_edge(LEFT, buff=default_buff)
 	
         admin_img = ImageMobject(f"{HOME}Server.png").scale(0.5).to_edge(UP, buff=1.5)
         decompte_img = ImageMobject(f"{HOME}Server.png").scale(0.5).to_edge(RIGHT, buff=1)
@@ -17,42 +18,121 @@ class ChiffrerVote(Scene):
         urne_img = ImageMobject(f"{HOME}PollingBox.png").scale(0.5).to_edge(DOWN, buff=1)
 
 
-        enveloppe = ImageMobject(f"{HOME}LetterOpen.png").scale(0.3).next_to(bob.get_right(), RIGHT)
+        enveloppe = ImageMobject(f"{HOME}LetterOpen.png").scale(0.3).next_to(bob_img.get_right(), RIGHT)
 
         signature = ImageMobject(f"{HOME}Signature.png").scale(0.3).next_to(enveloppe.get_right(), RIGHT)
 
-        pack = ImageMobject(f"{HOME}Product-256.png").scale(0.5).next_to(enveloppe.get_right() - np.array([0, 1, 0]), DOWN)
+        pack_1 = ImageMobject(f"{HOME}Product-256.png").scale(0.5).next_to(enveloppe.get_right() - np.array([0, 0.5, 0]), DOWN)
 
-        cadena_ouvert = ImageMobject(f"{HOME}LockOpenWhite.png").scale(0.3).next_to(pack.get_center() + np.array([0.5, 0.5, 0]), ORIGIN)
+        cadena_ouvert_1 = ImageMobject(f"{HOME}LockOpenWhite.png").scale(0.3).next_to(pack_1.get_center() + np.array([0.5, 0.5, 0]), ORIGIN)
 
-        cadena_ferme = ImageMobject(f"{HOME}LockClosedRed.png").scale(0.3).next_to(cadena_ouvert.get_center(), ORIGIN)
+        cadena_ferme_1 = ImageMobject(f"{HOME}LockClosedRed.png").scale(0.3).next_to(cadena_ouvert_1.get_center(), ORIGIN)
+
+        pack_2 = ImageMobject(f"{HOME}Product-256.png").scale(0.5).next_to(pack_1.get_top(), UP)
 
 
 		#text
-        client = Tex("Bob").next_to(bob.get_top(), UP)
+        client_bob = Tex("Bob").next_to(bob_img.get_top(), UP)
         amdin = Tex("Administrateur").next_to(admin_img.get_top(), UP)
         decompte = Tex("Décompte").next_to(decompte_img.get_top(), UP)
         urne = Tex("Urne").next_to(urne_img.get_top(), UP)
 
-        self.play(FadeIn(bob), Write(client))
+        self.play(FadeIn(bob_img), Write(client_bob))
 
         self.play(FadeIn(admin_img), FadeIn(decompte_img), FadeIn(urne_img), Write(amdin), Write(urne), Write(decompte))
 
         self.play(FadeIn(enveloppe), FadeIn(signature))
 
-        self.play(FadeIn(pack))
+        self.play(FadeIn(pack_1))
 
-        self.play(enveloppe.animate.next_to(pack.get_center(), ORIGIN), signature.animate.next_to(pack.get_center(), ORIGIN))
+        self.play(enveloppe.animate.next_to(pack_1.get_center(), ORIGIN), signature.animate.next_to(pack_1.get_center(), ORIGIN))
 
         self.play(FadeOut(enveloppe), FadeOut(signature))
 
-        self.play(FadeIn(cadena_ouvert))
+        self.play(FadeIn(cadena_ouvert_1))
 
-        self.play(FadeOut(cadena_ouvert), FadeIn(cadena_ferme))
+        self.play(FadeOut(cadena_ouvert_1), FadeIn(cadena_ferme_1))
 
-        self.play(pack.animate.next_to(urne_img.get_left(), LEFT), cadena_ferme.animate.next_to(urne_img.get_left() + np.array([0.3, 0.5, 0]), LEFT))
+        self.play(pack_1.animate.next_to(urne_img.get_left(), LEFT), cadena_ferme_1.animate.next_to(urne_img.get_left() + np.array([0.3, 0.5, 0]), LEFT))
 
-        self.wait(5)
+        pack_2 = ImageMobject(f"{HOME}Product-256.png").scale(0.3).next_to(pack_1.get_top(), UP)
+
+        cadena_ferme_2 = ImageMobject(f"{HOME}LockClosedRed.png").scale(0.2).next_to(pack_2.get_center() + np.array([0.2, 0.2, 0]), ORIGIN)
+
+        client_img = ImageMobject(f"{HOME}Woman.png").scale(0.5).next_to(client_bob.get_top(), UP)
+
+        pack_3 = ImageMobject(f"{HOME}Product-256.png").scale(0.3).next_to(pack_1.get_bottom(), DOWN)
+
+        cadena_ferme_3 = ImageMobject(f"{HOME}LockClosedRed.png").scale(0.2).next_to(pack_3.get_center() + np.array([0.2, 0.2, 0]), ORIGIN)
+                
+        client_img_2 = ImageMobject(f"{HOME}Men.png").scale(0.5).next_to(bob_img.get_bottom(), DOWN)
+
+        self.play(FadeIn(pack_2), FadeIn(pack_3), FadeIn(cadena_ferme_2), FadeIn(cadena_ferme_3), FadeIn(client_img), FadeIn(client_img_2))
+
+        self.wait(2)
+
+        pack_de_packs = ImageMobject(f"{HOME}Product-256.png").scale(0.5).next_to(urne.get_top(), UP)
+        cadena_ferme_de_packs = ImageMobject(f"{HOME}LockClosedRed.png").scale(0.3).next_to(pack_de_packs.get_center() + np.array([0.5, 0.5, 0]), ORIGIN)
+
+        self.play(FadeIn(pack_de_packs), FadeIn(cadena_ferme_de_packs))
+
+        self.play(pack_1.animate.next_to(pack_de_packs.get_center(), ORIGIN), pack_2.animate.next_to(pack_de_packs.get_center(), ORIGIN), pack_3.animate.next_to(pack_de_packs.get_center(), ORIGIN), cadena_ferme_1.animate.next_to(pack_de_packs.get_center(), ORIGIN), cadena_ferme_2.animate.next_to(pack_de_packs.get_center(), ORIGIN), cadena_ferme_3.animate.next_to(pack_de_packs.get_center(), ORIGIN))
+
+        self.play(FadeOut(pack_1), FadeOut(pack_2), FadeOut(pack_3), FadeOut(cadena_ferme_1), FadeOut(cadena_ferme_2), FadeOut(cadena_ferme_3))
+
+        self.play(pack_de_packs.animate.next_to(decompte_img.get_left() - np.array([2.5, 0, 0]), LEFT), cadena_ferme_de_packs.animate.next_to(decompte_img.get_left() - np.array([2.3, -0.5, 0]), LEFT))
+
+        pack_1.next_to(pack_de_packs.get_center(), ORIGIN)
+
+        cadena_ferme_1.next_to(pack_de_packs.get_center() + np.array([0.5, 0.5, 0]), ORIGIN)
+
+        pack_2.next_to(pack_de_packs.get_center(), ORIGIN)
+
+        cadena_ferme_2.next_to(pack_de_packs.get_center() + np.array([0.2, 0.2, 0]), ORIGIN)
+
+        pack_3.next_to(pack_de_packs.get_center(), ORIGIN)
+
+        cadena_ferme_3.next_to(pack_de_packs.get_center() + np.array([0.2, 0.2, 0]), ORIGIN)
+
+        self.play(FadeIn(pack_1), FadeIn(pack_2), FadeIn(pack_3), FadeIn(cadena_ferme_1), FadeIn(cadena_ferme_2), FadeIn(cadena_ferme_3))
 
 
 
+        self.play(pack_1.animate.next_to(decompte_img.get_left(), LEFT), pack_2.animate.next_to(decompte_img.get_left, UL), cadena_ferme_2.animate.next_to(decompte_img.get_left() + np.array([0.2, 0.3, 0]), UL), pack_3.animate.next_to(decompte_img.get_left(), DL), cadena_ferme_3.animate.next_to(decompte_img.get_left() + np.array([0.2, 0.2, 0]), DL))
+
+        pos_init_clef = decompte_img.get_center()   
+        clef = ImageMobject(f"{HOME}KeyWhite.png").scale(0.2).next_to(pos_init_clef, ORIGIN)
+
+        cadena_ouvert_2 = ImageMobject(f"{HOME}LockOpenWhite.png").scale(0.3).next_to(cadena_ferme_1.get_center(), ORIGIN)
+        cadena_ouvert_3 = ImageMobject(f"{HOME}LockOpenWhite.png").scale(0.2).next_to(cadena_ferme_2.get_center(), ORIGIN)
+        cadena_ouvert_4 = ImageMobject(f"{HOME}LockOpenWhite.png").scale(0.2).next_to(cadena_ferme_3.get_center(), ORIGIN)
+ 
+        self.play(FadeIn(clef))
+
+        self.play(clef.animate.next_to(cadena_ferme_2.get_right(), ORIGIN))
+
+        self.play(FadeOut(cadena_ferme_2), FadeIn(cadena_ouvert_3))
+
+        self.play(clef.animate.next_to(pos_init_clef, ORIGIN))
+
+        self.play(clef.animate.next_to(cadena_ferme_1.get_right(), ORIGIN))
+
+        self.play(FadeOut(cadena_ferme_1), FadeIn(cadena_ouvert_2))
+
+        self.play(clef.animate.next_to(pos_init_clef, ORIGIN))
+
+        self.play(clef.animate.next_to(cadena_ferme_3.get_right(), ORIGIN))
+
+        self.play(FadeOut(cadena_ferme_3), FadeIn(cadena_ouvert_4))
+
+        self.play(clef.animate.next_to(pos_init_clef, ORIGIN))
+
+        self.play(FadeOut(clef))
+
+        self.wait(2)
+
+        resultats = ImageMobject(f"{HOME}List.png").scale(0.5).next_to(decompte_img.get_left() - np.array([0.5, 0, 0]), LEFT)
+
+        self.play(FadeOut(pack_1), FadeOut(pack_2), FadeOut(pack_3), FadeOut(cadena_ouvert_2), FadeOut(cadena_ouvert_3), FadeOut(cadena_ouvert_4), FadeIn(resultats))
+
+        self.wait(2)
