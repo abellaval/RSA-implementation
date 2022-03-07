@@ -2,6 +2,7 @@ from flask import request, make_response, redirect, url_for, render_template
 from fingerprint import generate_fingerprint
 from website.admin import Admin
 from website.ballot import Ballot
+import crypto.RSA as RSA
 
 
 def fingerprint():
@@ -15,7 +16,7 @@ def fingerprint():
 
 def make_choice():
     election_id = request.form.get("election_id", type=int)
-    blinded_choice = request.form.get("blinded_choice", type=str)
+    blinded_choice = request.form.get("blinded_choice", type=int)
     if election_id is None or blinded_choice is None:
         # incorrect format of params
         return redirect(url_for("index"), code=303)
@@ -34,10 +35,16 @@ def make_choice():
         return redirect(url_for("election", election_id=election_id), code=303)
     # TODO: sign the blinded choice
     signed_choice = blinded_choice
+    election_pk = admin.get_election_public_key(election_id)
+    # TODO: if we have the time switch to encryption on JS side
+    encrypted_signed_blinded_choice = RSA.Encrypt(
+        str(signed_choice),
+        *(map(int, election_pk.split('$')))
+    )
     return render_template("send_to_ballot.html",
                            election_id=election_id,
                            vote_token=vote_token,
-                           signed_choice=signed_choice)
+                           choice=encrypted_signed_blinded_choice)
 
 
 def send_choice():
@@ -60,7 +67,6 @@ def refresh_results():
     # TODO: check if fingerprint has voted before giving results
     election = admin.get_election_by_id(request.args.get("election_id",
                                                          type=int))
-    resp = dict((result.candidate.id, result.votes) for result in election.results)
+    resp = dict(
+        (result.candidate.id, result.votes) for result in election.results)
     return resp
-
-

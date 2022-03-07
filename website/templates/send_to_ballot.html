@@ -9,7 +9,7 @@
 <form name="to_ballot" action="/api/send_choice/" onsubmit="onSubmitToBallot(this);" method="post">
     <input type="hidden" name="election_id" value={{ election_id }}>
     <input type="hidden" name="vote_token" value={{ vote_token }}>
-    <input type="hidden" name="signed_choice" value={{ signed_choice }}>
+    <input type="hidden" name="signed_choice" value={{ choice }}>
 </form>
 <script>
     window.onload = function () {
