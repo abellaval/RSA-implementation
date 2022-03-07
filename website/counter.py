@@ -29,7 +29,7 @@ class Counter:
         votes_by_election = dict()
         for election_id, choice in votes:
             # TODO: decrypt vote when RSA is implemented
-            choice = int(RSA.Decrypt(
+            choice = int(RSA.D(
                 choice,
                 *(map(int, self.elections_secret_key[election_id].split('$')))
             ))

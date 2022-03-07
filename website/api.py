@@ -36,20 +36,15 @@ def make_choice():
     # TODO: sign the blinded choice
     signed_choice = blinded_choice
     election_pk = admin.get_election_public_key(election_id)
-    # TODO: if we have the time switch to encryption on JS side
-    encrypted_signed_blinded_choice = RSA.Encrypt(
-        str(signed_choice),
-        *(map(int, election_pk.split('$')))
-    )
     return render_template("send_to_ballot.html",
                            election_id=election_id,
                            vote_token=vote_token,
-                           choice=encrypted_signed_blinded_choice)
+                           choice=signed_choice)
 
 
 def send_choice():
     election_id = request.form.get("election_id", type=int)
-    signed_choice = request.form.get("signed_choice")
+    signed_choice = request.form.get("signed_choice", type=int)
     vote_token = request.form.get("vote_token", type=str)
     if election_id is None or signed_choice is None or vote_token is None:
         # incorrect format of params
