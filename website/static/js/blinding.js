@@ -24,7 +24,7 @@ function gcd(a, b) {
     return gcd(b, a % b)
 }
 
-function getBlindingFactor(electionID, choice) {
+function getBlindingFactor(electionID, N) {
     const name = `blinding_factor_${electionID}`
     let rngValStr = document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || ''
     let rngVal;
@@ -35,7 +35,7 @@ function getBlindingFactor(electionID, choice) {
         while (!is_coprime) {
             window.crypto.getRandomValues(val)
             rngVal = val[0]
-            if (gcd(BigInt(choice), rngVal) === 1n) {
+            if (gcd(BigInt(N), rngVal) === 1n) {
                 is_coprime = true
             }
         }
@@ -52,18 +52,30 @@ function onSubmitToAdmin(form) {
     const [e, N] = election_pk.split('$').map(x => BigInt(x))
     console.log(e,N)
     const choice = form.elements.blinded_choice.value
+    const signing_expo =  form.elements.admin_signing_expo.value
+    console.log(signing_expo)
     // encrypt choice
     const encrypted_choice = encryptInt(choice, e, N)
     // TODO: add blind factor
-    // const electionID = form.elements.election_id.value
-    // const blinding_factor = getBlindingFactor(electionID, encrypted_choice)
+    const electionID = form.elements.election_id.value
+    const blinding_factor = getBlindingFactor(electionID, N)
     // add blind factor
-    // form.elements.blinded_choice.value = modExp(encrypted_choice, blinding_factor, N)
-    form.elements.blinded_choice.value = encrypted_choice
+    form.elements.blinded_choice.value = modExp(blinding_factor, signing_expo, N) * encrypted_choice
+    // form.elements.blinded_choice.value = encrypted_choice
 }
 
 function onSubmitToBallot(form) {
-    // blinding_factor = getBlindingFactor()
+    //
+    debugger
+    const N = form.elements.signing_modulo.value
+    console.log(N)
+    const election_id=form.elements.election_id.value
+    blinding_factor = getBlindingFactor(election_id, N)
+    const choice = form.elements.signed_choice.value
+
+    const s = modExp(blinding_factor, -1, N) * choice
+    console.log(s)
+
     // TODO: remove blinding factor from the signed choice
-    // form.elements.signed_choice.value /= blinding_factor
+    form.elements.signed_choice.value = s
 }
