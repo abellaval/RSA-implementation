@@ -30,52 +30,57 @@ function getBlindingFactor(electionID, N) {
     let rngVal;
     if (rngValStr === '') {
         // create the blinding factor and save it
-        const val = new BigInt64Array(1)
         let is_coprime = false
         while (!is_coprime) {
-            window.crypto.getRandomValues(val)
-            rngVal = val[0]
-            if (gcd(BigInt(N), rngVal) === 1n) {
+            rngVal = Math.floor(2 + Math.random() * 1000)
+            if (gcd(BigInt(N), BigInt(rngVal)) === 1n) {
                 is_coprime = true
             }
         }
-        document.cookie = `${name}=${rngVal}`
+        document.cookie = `${name}=${rngVal}; SameSite=Strict; Path=/;`
     } else {
         rngVal = parseInt(rngValStr)
     }
-    return rngVal
+    return BigInt(rngVal)
 }
 
 function onSubmitToAdmin(form) {
     const election_pk = form.elements.election_pk.value
     console.log(election_pk)
     const [e, N] = election_pk.split('$').map(x => BigInt(x))
-    console.log(e,N)
+    console.log("Election PK:", e, N)
     const choice = form.elements.blinded_choice.value
-    const signing_expo =  form.elements.admin_signing_expo.value
-    console.log(signing_expo)
+    const admin_signing_pk = form.elements.admin_signing_pk.value
+    const [signing_e, signing_N] = admin_signing_pk.split('$').map(x => BigInt(x))
+    console.log("Signing PK:", signing_e, signing_N)
     // encrypt choice
+    console.log("Choice=", choice)
     const encrypted_choice = encryptInt(choice, e, N)
-    // TODO: add blind factor
+    console.log("EncryptedChoice=", encrypted_choice)
     const electionID = form.elements.election_id.value
-    const blinding_factor = getBlindingFactor(electionID, N)
+    const blinding_factor = getBlindingFactor(electionID, signing_N)
+    console.log("BlindingFactor=", blinding_factor)
     // add blind factor
-    form.elements.blinded_choice.value = modExp(blinding_factor, signing_expo, N) * encrypted_choice
-    // form.elements.blinded_choice.value = encrypted_choice
+    // const blinded_msg = modExp(blinding_factor, signing_e, signing_N) * encrypted_choice
+    const blinded_msg = blinding_factor * encrypted_choice
+    console.log("BlindedMsg=", blinded_msg)
+    form.elements.blinded_choice.value = blinded_msg
 }
 
 function onSubmitToBallot(form) {
-    //
-    debugger
-    const N = form.elements.signing_modulo.value
-    console.log(N)
-    const election_id=form.elements.election_id.value
-    blinding_factor = getBlindingFactor(election_id, N)
-    const choice = form.elements.signed_choice.value
-
-    const s = modExp(blinding_factor, -1, N) * choice
-    console.log(s)
-
+    console.log("We enter submit to ballot")
+    const signing_N = BigInt(form.elements.signing_modulo.value)
+    console.log("Signing N = ", signing_N)
+    const electionID = form.elements.election_id.value
+    blindingFactor = getBlindingFactor(electionID, signing_N)
+    console.log("BlindingFactor=", blindingFactor)
+    const blindedMsg = BigInt(form.elements.signed_choice.value)
+    console.log("BlindedMsg=", blindedMsg)
     // TODO: remove blinding factor from the signed choice
-    form.elements.signed_choice.value = s
+    form.elements.signed_choice.value = blindedMsg / blindingFactor
+    console.log("EncryptedChoice = ", form.elements.signed_choice.value)
+    // remove the cookie for blinding factor
+    const name = `blinding_factor_${electionID}`
+    document.cookie = `${name}=; SameSite=Strict; Path=/; Max-Age=-999999;`
+    form.submit()
 }

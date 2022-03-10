@@ -6,7 +6,7 @@
     <script src="{{ url_for("static", filename="js/blinding.js") }}" type="text/javascript"></script>
 </head>
 <body>
-<form name="to_ballot" action="/api/send_choice/" onsubmit="onSubmitToBallot(this);" method="post">
+<form name="to_ballot" action="/api/send_choice/" method="post">
     <input type="hidden" name="election_id" value={{ election_id }}>
     <input type="hidden" name="vote_token" value={{ vote_token }}>
     <input type="hidden" name="signed_choice" value={{ choice }}>
@@ -14,7 +14,7 @@
 </form>
 <script>
     window.onload = function () {
-        document.forms['to_ballot'].submit();
+        onSubmitToBallot(document.forms['to_ballot'])
     }
 </script>
 </body>

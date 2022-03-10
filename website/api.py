@@ -35,7 +35,7 @@ def make_choice():
         return redirect(url_for("election", election_id=election_id), code=303)
     # TODO: sign the blinded choice
     signed_choice = blinded_choice
-    admin_signing_modulo = int(admin.signature_secret_key.split("$")[1])
+    admin_signing_modulo = admin.signature_secret_key.split("$")[1]
     return render_template("send_to_ballot.html",
                            election_id=election_id,
                            vote_token=vote_token,

@@ -17,14 +17,14 @@ VALUES ('Candidate 1', 'Description for candidate 1'),
 
 -- Associate candidates with an election
 INSERT INTO candidate_in_election(election_id, candidate_id, vote_number)
-VALUES (1, 1, 1),
-       (1, 2, 2),
-       (1, 3, 3),
-       (2, 4, 1),
-       (2, 5, 2),
-       (3, 6, 1),
-       (3, 7, 2),
-       (3, 8, 3);
+VALUES (1, 1, 2),
+       (1, 2, 3),
+       (1, 3, 5),
+       (2, 4, 2),
+       (2, 5, 3),
+       (3, 6, 2),
+       (3, 7, 3),
+       (3, 8, 5);
 
 -- Create results for each election
 INSERT INTO result(election_candidate_id, vote_count)

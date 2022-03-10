@@ -23,9 +23,10 @@ def election(election_id):
         return redirect(url_for("result", election_id=election_id), code=303)
     election = admin.get_election_by_id(election_id)
     election_pk = admin.get_election_public_key(election_id)
-    admin_signing_expo = int(admin.signature_secret_key.split("$")[0])
+    admin_signing_pk = admin.signature_secret_key
     return render_template("election.html", election=election,
-                           vote_token=vote_token, election_pk=election_pk, admin_signing_expo=admin_signing_expo)
+                           vote_token=vote_token, election_pk=election_pk,
+                           admin_signing_pk=admin_signing_pk)
 
 
 def result(election_id):
