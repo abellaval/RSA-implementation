@@ -44,6 +44,18 @@ function getBlindingFactor(electionID, N) {
     return BigInt(rngVal)
 }
 
+function pushChoice(electionID, choice) {
+    const name = `encrypted_choice_${electionID}`
+    document.cookie = `${name}=${choice}; SameSite=Strict; Path=/;`
+}
+
+function popChoice(electionID) {
+    const name = `encrypted_choice_${electionID}`
+    const choice = document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || ''
+    document.cookie = `${name}=; SameSite=Strict; Path=/; Max-Age=-999999;`
+    return parseInt(choice)
+}
+
 function onSubmitToAdmin(form) {
     const election_pk = form.elements.election_pk.value
     console.log(election_pk)
@@ -60,9 +72,11 @@ function onSubmitToAdmin(form) {
     const electionID = form.elements.election_id.value
     const blinding_factor = getBlindingFactor(electionID, signing_N)
     console.log("BlindingFactor=", blinding_factor)
+    // save encrypted_choice to cookie
+    pushChoice(electionID, encrypted_choice)
     // add blind factor
-    // const blinded_msg = modExp(blinding_factor, signing_e, signing_N) * encrypted_choice
-    const blinded_msg = blinding_factor * encrypted_choice
+    const blinded_msg = modExp(blinding_factor, signing_e, signing_N) * encrypted_choice
+    // const blinded_msg = blinding_factor * encrypted_choice
     console.log("BlindedMsg=", blinded_msg)
     form.elements.blinded_choice.value = blinded_msg
 }
@@ -78,7 +92,11 @@ function onSubmitToBallot(form) {
     console.log("BlindedMsg=", blindedMsg)
     // TODO: remove blinding factor from the signed choice
     form.elements.signed_choice.value = blindedMsg / blindingFactor
-    console.log("EncryptedChoice = ", form.elements.signed_choice.value)
+    console.log("SignedChoiceAfterRemovingBlinding = ", form.elements.signed_choice.value)
+    // set the encrypted choice from cookie in form
+    const encryptedChoice = popChoice(electionID)
+    console.log("EncryptedChoice=", encryptedChoice)
+    form.elements.encrypted_choice.value = encryptedChoice
     // remove the cookie for blinding factor
     const name = `blinding_factor_${electionID}`
     document.cookie = `${name}=; SameSite=Strict; Path=/; Max-Age=-999999;`

@@ -34,27 +34,38 @@ def make_choice():
         # the client tampered with his vote_token
         return redirect(url_for("election", election_id=election_id), code=303)
     # TODO: sign the blinded choice
-    signed_choice = blinded_choice
-    admin_signing_modulo = admin.signature_secret_key.split("$")[1]
+    admin_signing_expo, admin_signing_modulo = \
+        admin.signature_public_key.split("$")
+    signed_choice = RSA.D(blinded_choice,
+                          int(admin_signing_expo),
+                          int(admin_signing_modulo))
     return render_template("send_to_ballot.html",
                            election_id=election_id,
                            vote_token=vote_token,
-                           choice=signed_choice,
+                           signed_choice=signed_choice,
                            signing_modulo=admin_signing_modulo)
 
 
 def send_choice():
     election_id = request.form.get("election_id", type=int)
     signed_choice = request.form.get("signed_choice", type=int)
+    encrypted_choice = request.form.get("encrypted_choice", type=int)
     vote_token = request.form.get("vote_token", type=str)
     if election_id is None or signed_choice is None or vote_token is None:
         # incorrect format of params
         return redirect(url_for("index"), code=303)
     ballot = Ballot.get_ballot()
-    # TODO: check signature
-    ballot.put(election_id, vote_token, signed_choice)
-    # TODO: put the flash message in result instead of index?
+    admin = Admin.get_admin()
+    # TODO: Not working and I don't know how to fix it
+    # if check_signature(encrypted_choice, signed_choice,
+    #                    *(map(int, admin.signature_secret_key.split('$')))):
+    ballot.put(election_id, vote_token, encrypted_choice)
     return redirect(url_for("result", election_id=election_id), code=303)
+
+
+def check_signature(original_msg, signature, e, N):
+    decrypted_signature = RSA.E(signature, e, N)
+    return True if decrypted_signature == original_msg else False
 
 
 def refresh_results():
