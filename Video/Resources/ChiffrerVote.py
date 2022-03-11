@@ -20,6 +20,8 @@ class ChiffrerVote(Scene):
 
         enveloppe = ImageMobject(f"{HOME}LetterOpen.png").scale(0.3).next_to(bob_img.get_right(), RIGHT)
 
+        vote_bob = Tex("a").next_to(enveloppe.get_center(), ORIGIN)
+
         signature = ImageMobject(f"{HOME}Signature.png").scale(0.3).next_to(enveloppe.get_right(), RIGHT)
 
         pack_1 = ImageMobject(f"{HOME}Product-256.png").scale(0.5).next_to(enveloppe.get_right() - np.array([0, 0.5, 0]), DOWN)
@@ -41,13 +43,13 @@ class ChiffrerVote(Scene):
 
         self.play(FadeIn(admin_img), FadeIn(decompte_img), FadeIn(urne_img), Write(amdin), Write(urne), Write(decompte))
 
-        self.play(FadeIn(enveloppe), FadeIn(signature))
+        self.play(FadeIn(enveloppe), Write(vote_bob), FadeIn(signature))
 
         self.play(FadeIn(pack_1))
 
-        self.play(enveloppe.animate.next_to(pack_1.get_center(), ORIGIN), signature.animate.next_to(pack_1.get_center(), ORIGIN))
+        self.play(enveloppe.animate.next_to(pack_1.get_center(), ORIGIN), vote_bob.animate.next_to(pack_1.get_center(), ORIGIN), signature.animate.next_to(pack_1.get_center(), ORIGIN))
 
-        self.play(FadeOut(enveloppe), FadeOut(signature))
+        self.play(FadeOut(enveloppe), FadeOut(vote_bob), FadeOut(signature))
 
         self.play(FadeIn(cadena_ouvert_1))
 
@@ -131,8 +133,12 @@ class ChiffrerVote(Scene):
 
         self.wait(2)
 
-        resultats = ImageMobject(f"{HOME}List.png").scale(0.5).next_to(decompte_img.get_left() - np.array([0.5, 0, 0]), LEFT)
+        resultats = ImageMobject(f"{HOME}List.png").scale(0.5).next_to(decompte_img.get_left() - np.array([0.5,-1, 0]), LEFT)
 
-        self.play(FadeOut(pack_1), FadeOut(pack_2), FadeOut(pack_3), FadeOut(cadena_ouvert_2), FadeOut(cadena_ouvert_3), FadeOut(cadena_ouvert_4), FadeIn(resultats))
+        vote_a = Tex("$( 2 \\times \\ Option \\ a )$").scale(0.7).next_to(resultats.get_bottom(), DOWN)
+
+        vote_b = Tex("$( 1 \\times \\ Option \\ b )$").scale(0.7).next_to(vote_a.get_bottom(), DOWN)
+
+        self.play(FadeOut(pack_1), FadeOut(pack_2), FadeOut(pack_3), FadeOut(cadena_ouvert_2), FadeOut(cadena_ouvert_3), FadeOut(cadena_ouvert_4), FadeIn(resultats), FadeIn(vote_a), FadeIn(vote_b))
 
         self.wait(2)
