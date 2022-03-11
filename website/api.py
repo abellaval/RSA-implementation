@@ -3,6 +3,7 @@ from fingerprint import generate_fingerprint
 from website.admin import Admin
 from website.ballot import Ballot
 import crypto.RSA as RSA
+from hashlib import sha256
 
 
 def fingerprint():
@@ -64,8 +65,11 @@ def send_choice():
 
 
 def check_signature(original_msg, signature, e, N):
-    decrypted_signature = RSA.E(signature, e, N)
-    return True if decrypted_signature == original_msg else False
+    decrypted_signature_hash = RSA.E(signature, e, N)
+    print(sha256(str(original_msg).encode('utf-8')).digest())
+    original_msg_hash = int.from_bytes(
+        sha256(str(original_msg).encode('utf-8')).digest()[:4], "little")
+    return True if decrypted_signature_hash == original_msg_hash else False
 
 
 def refresh_results():

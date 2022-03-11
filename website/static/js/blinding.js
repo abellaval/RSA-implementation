@@ -56,7 +56,15 @@ function popChoice(electionID) {
     return parseInt(choice)
 }
 
-function onSubmitToAdmin(form) {
+async function hash(data) {
+    const dataUint8 = new TextEncoder().encode(data)
+    const hashBuffer = await crypto.subtle.digest('SHA-256', dataUint8);
+    // const hashArray = Array.from(new Uint8Array(hashBuffer));
+    // console.log("HashArr=", hashArray)
+    return new Uint32Array(new Uint8Array(hashBuffer).buffer.slice(0,4))[0]
+}
+
+async function onSubmitToAdmin(form) {
     const election_pk = form.elements.election_pk.value
     console.log(election_pk)
     const [e, N] = election_pk.split('$').map(x => BigInt(x))
@@ -75,7 +83,9 @@ function onSubmitToAdmin(form) {
     // save encrypted_choice to cookie
     pushChoice(electionID, encrypted_choice)
     // add blind factor
-    const blinded_msg = modExp(blinding_factor, signing_e, signing_N) * encrypted_choice
+    let hashed_msg = await hash(encrypted_choice)
+    console.log("Hashed_msg=", hashed_msg)
+    const blinded_msg = modExp(blinding_factor, signing_e, signing_N) * BigInt(hashed_msg)
     // const blinded_msg = blinding_factor * encrypted_choice
     console.log("BlindedMsg=", blinded_msg)
     form.elements.blinded_choice.value = blinded_msg
