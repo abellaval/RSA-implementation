@@ -6,7 +6,7 @@ import database
 from website.ballot import Ballot
 
 app = Flask(__name__)
-app.secret_key = "dummyKey" # testKey for the session
+app.secret_key = "9aa15ada40490ed9549547aba8826752be22cd873e797eaaed98b0f07a17d490"
 
 app.add_url_rule("/", view_func=views.index)
 app.add_url_rule("/election/<int:election_id>", view_func=views.election)
@@ -26,7 +26,8 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
-scheduler.add_job("ballot_tick", lambda: Ballot.tick(scheduler), trigger="interval",
+scheduler.add_job("ballot_tick", lambda: Ballot.tick(scheduler),
+                  trigger="interval",
                   seconds=5)
 
 if __name__ == "__main__":

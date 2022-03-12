@@ -18,8 +18,7 @@ class Admin:
     def get_admin():
         global admin
         if admin is None:
-            # TODO: estimate k based on the size of the message
-            sk, pk, _, _, _, _ = RSA.KeyGen(k=32)
+            sk, pk, _, _, _, _ = RSA.KeyGen(k=1024)
             sk = f"{sk[0]}${sk[1]}"
             pk = f"{pk[0]}${pk[1]}"
             admin = Admin((sk, pk))
