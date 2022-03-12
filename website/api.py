@@ -60,9 +60,7 @@ def send_choice():
 
 
 def refresh_results():
-    fingerprint = request.cookies.get("fingerprint")
     admin = Admin.get_admin()
-    # TODO: check if fingerprint has voted before giving results
     election = admin.get_election_by_id(request.args.get("election_id",
                                                          type=int))
     resp = dict(

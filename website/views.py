@@ -34,9 +34,8 @@ def result(election_id):
         return redirect(url_for("index"), code=303)
     admin = Admin.get_admin()
     vote_token = admin.get_vote_token(election_id, fingerprint)
-    # FIXME: commented for testing
-    # if vote_token is not None:
-    #     # This client hasn't voted, redirect to choices for election
-    #     return redirect(url_for("election", election_id=election_id), code=303)
+    if vote_token is not None:
+        # This client hasn't voted, redirect to choices for election
+        return redirect(url_for("election", election_id=election_id), code=303)
     election = admin.get_election_by_id(election_id)
     return render_template("result.html", results=election.results)
