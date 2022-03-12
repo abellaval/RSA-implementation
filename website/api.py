@@ -3,7 +3,6 @@ from fingerprint import generate_fingerprint
 from website.admin import Admin
 from website.ballot import Ballot
 import crypto.RSA as RSA
-from hashlib import sha256
 
 
 def fingerprint():
@@ -34,17 +33,11 @@ def make_choice():
     if vote_token != vote_token_from_db:
         # the client tampered with his vote_token
         return redirect(url_for("election", election_id=election_id), code=303)
-    print("admin_pk(1)=", admin.signature_secret_key)
-    print("admin_sk(1)=", admin.signature_public_key)
     admin_signing_expo, admin_signing_modulo = \
         (map(int, admin.signature_public_key.split("$")))
-    print("blinded_choice=", blinded_choice)
-    print("signing blinded_choice with d=", admin_signing_expo, " and N=",
-          admin_signing_modulo)
     signed_choice = RSA.D(blinded_choice,
                           admin_signing_expo,
                           admin_signing_modulo)
-    print("blindsignature=", signed_choice)
     return render_template("send_to_ballot.html",
                            election_id=election_id,
                            vote_token=vote_token,

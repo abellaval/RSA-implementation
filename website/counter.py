@@ -33,7 +33,6 @@ class Counter:
                 choice,
                 *(map(int, self.elections_secret_key[election_id].split('$')))
             ))
-            # TODO: check signature
             if check_signature(choice, signature):
                 election_votes = votes_by_election.setdefault(election_id, dict())
                 candidate_votes_for_election = election_votes.setdefault(choice, 0)
@@ -59,13 +58,6 @@ class Counter:
 
 def check_signature(original_msg, signature):
     admin = Admin.get_admin()
-    print("admin_pk(2)=", admin.signature_secret_key)
-    print("admin_sk(2)=", admin.signature_public_key)
-    print("signature=", signature)
-    print("original_msg=", original_msg)
     e, N = (map(int, admin.signature_secret_key.split('$')))
     decrypted_signature = RSA.E(signature, e, N)
-    print("decrypted_signature=", decrypted_signature)
-    d, N = (map(int, admin.signature_public_key.split('$')))
-    expected_sig = RSA.exp(original_msg, d, N)
     return True if decrypted_signature == original_msg else False

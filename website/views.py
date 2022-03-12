@@ -1,8 +1,6 @@
-from flask import render_template, request, make_response, redirect, url_for, \
+from flask import render_template, request, redirect, url_for, \
     flash
-from database import get_db
 from website.admin import Admin
-import crypto.RSA as RSA
 
 
 def index():
@@ -42,9 +40,3 @@ def result(election_id):
     #     return redirect(url_for("election", election_id=election_id), code=303)
     election = admin.get_election_by_id(election_id)
     return render_template("result.html", results=election.results)
-
-
-def confirm(candidat_name):
-    message = "Votre vote pour " + candidat_name + " a été enregistré!"
-    flash(message, "info")
-    return redirect(url_for("index"))

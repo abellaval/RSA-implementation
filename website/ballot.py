@@ -21,8 +21,6 @@ class Ballot:
     def tick(scheduler):
         # this allows use to use Flask context in function
         with scheduler.app.app_context():
-            # TODO: remove the print on deploy
-            print("Ballot tick")
             ballot = Ballot.get_ballot()
             if ballot.content:
                 counter = Counter.get_counter()
