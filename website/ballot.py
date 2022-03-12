@@ -29,7 +29,7 @@ class Ballot:
                 counter.recieve_votes(deepcopy(ballot.content))
                 ballot.content.clear()
 
-    def put(self, election_id, vote_token, choice):
+    def put(self, election_id, vote_token, choice, signature):
         admin = Admin.get_admin()
         admin.notify(election_id, vote_token)
-        self.content.append((election_id, choice))
+        self.content.append((election_id, choice, signature))

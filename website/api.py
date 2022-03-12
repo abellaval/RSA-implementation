@@ -34,42 +34,36 @@ def make_choice():
     if vote_token != vote_token_from_db:
         # the client tampered with his vote_token
         return redirect(url_for("election", election_id=election_id), code=303)
-    # TODO: sign the blinded choice
+    print("admin_pk(1)=", admin.signature_secret_key)
+    print("admin_sk(1)=", admin.signature_public_key)
     admin_signing_expo, admin_signing_modulo = \
-        admin.signature_public_key.split("$")
+        (map(int, admin.signature_public_key.split("$")))
+    print("blinded_choice=", blinded_choice)
+    print("signing blinded_choice with d=", admin_signing_expo, " and N=",
+          admin_signing_modulo)
     signed_choice = RSA.D(blinded_choice,
-                          int(admin_signing_expo),
-                          int(admin_signing_modulo))
+                          admin_signing_expo,
+                          admin_signing_modulo)
+    print("blindsignature=", signed_choice)
     return render_template("send_to_ballot.html",
                            election_id=election_id,
                            vote_token=vote_token,
                            signed_choice=signed_choice,
-                           signing_modulo=admin_signing_modulo)
+                           signing_modulo=admin_signing_modulo,
+                           election_pk=admin.get_election_public_key(election_id))
 
 
 def send_choice():
     election_id = request.form.get("election_id", type=int)
-    signed_choice = request.form.get("signed_choice", type=int)
+    signature = request.form.get("signed_choice", type=int)
     encrypted_choice = request.form.get("encrypted_choice", type=int)
     vote_token = request.form.get("vote_token", type=str)
-    if election_id is None or signed_choice is None or vote_token is None:
+    if election_id is None or signature is None or vote_token is None:
         # incorrect format of params
         return redirect(url_for("index"), code=303)
     ballot = Ballot.get_ballot()
-    admin = Admin.get_admin()
-    # TODO: Not working and I don't know how to fix it
-    # if check_signature(encrypted_choice, signed_choice,
-    #                    *(map(int, admin.signature_secret_key.split('$')))):
-    ballot.put(election_id, vote_token, encrypted_choice)
+    ballot.put(election_id, vote_token, encrypted_choice, signature)
     return redirect(url_for("result", election_id=election_id), code=303)
-
-
-def check_signature(original_msg, signature, e, N):
-    decrypted_signature_hash = RSA.E(signature, e, N)
-    print(sha256(str(original_msg).encode('utf-8')).digest())
-    original_msg_hash = int.from_bytes(
-        sha256(str(original_msg).encode('utf-8')).digest()[:4], "little")
-    return True if decrypted_signature_hash == original_msg_hash else False
 
 
 def refresh_results():

@@ -22,10 +22,10 @@ def election(election_id):
         # This client has already voted, redirect to result of election
         return redirect(url_for("result", election_id=election_id), code=303)
     election = admin.get_election_by_id(election_id)
-    election_pk = admin.get_election_public_key(election_id)
+    # election_pk = admin.get_election_public_key(election_id)
     admin_signing_pk = admin.signature_secret_key
     return render_template("election.html", election=election,
-                           vote_token=vote_token, election_pk=election_pk,
+                           vote_token=vote_token,
                            admin_signing_pk=admin_signing_pk)
 
 
