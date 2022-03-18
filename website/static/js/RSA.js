@@ -1,3 +1,13 @@
+var dick ={"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7, "I": 8, "J": 9, "K": 10, "L": 11, "M": 12, "N": 13, "O": 14, "P": 15, "Q": 16, 
+"R": 17, "S": 18, "T": 19, "U": 20, "V": 21, "W": 22, "X": 23, "Y": 24, "Z": 25, "a": 26, "b": 27, "c": 28, "d": 29, "e": 30, "f": 31, "g": 32, "h": 33, "i": 34, 
+"j": 35, "k": 36, "l": 37, "m": 38, "n": 39, "o": 40, "p": 41, "q": 42, "r": 43, "s": 44, "t": 45, "u": 46, "v": 47, "w": 48, "x": 49, "y": 50, "z": 51, 
+"0": 52, "1": 53, "2": 54, "3": 55, "4": 56, "5": 57, "6": 58, "7": 59, "8": 60, "9": 61, " " : 62, "," : 63}
+
+
+
+
+
+
 
 function random(k){
 k = Math.floor(k/4);
@@ -153,12 +163,83 @@ function E(M,e,N){return powerMod(M,e,N)}
 
 function D(C,d,N){return powerMod(C,d,N)}
 
-x=key_gen(512)
-console.log("pk",x[0])
-console.log("sk",x[1])
-console.log("N",x[2])
+function getKeyByValue(value) {
+  return Object.keys(dick).find(key => dick[key] ==value);
+}
 
-c = E(10000000000000000000000,x[0],x[2])
+function dec2bin(dec) {
+  return (dec >> 0n).toString(2);
+}
+
+
+function int_str(s){
+
+  b =dec2bin(n)// Ceci est un string in memory of Ben
+  while(b.length%6 !=0) b="0"+b
+  char = new Array()
+  for(let i=0;i<Math.floor(b.length/6); ++i){
+    slice = parseInt( b.slice(i*6,i*6+6),2)
+    char.push(slice)
+  }
+  char=char.reverse()
+  string=""
+  for (c in char){
+    kar = getKeyByValue(char[c])
+    string =string+kar
+  }
+  return string
+}
+
+function str_int(s){
+    n = 0n
+    indice = 0
+    for(let i=0n;i<s.length;++i){
+        kar = s[i]
+        exp= 6n*i
+        n+= BigInt(dick[kar])*(2n**exp)
+    }
+    return n
+  }
+
+
+
+x=key_gen(1024)
+texte = "je mappelle Son jai 56 ans et je recherche un emploi"
+console.log("N",x[2])
+texteint= str_int(texte)
+console.log("texteint",texteint)
+
+c = E(texteint,x[0],x[2])
 console.log("c",c)
 d = D(c,x[1],x[2])
-console.log("d",d)
+console.log(int_str(d))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
