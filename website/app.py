@@ -11,6 +11,7 @@ app.secret_key = "9aa15ada40490ed9549547aba8826752be22cd873e797eaaed98b0f07a17d4
 app.add_url_rule("/", view_func=views.index)
 app.add_url_rule("/election/<int:election_id>", view_func=views.election)
 app.add_url_rule("/result/<int:election_id>", view_func=views.result)
+app.add_url_rule("/calculator", view_func=views.calculator)
 app.add_url_rule("/api/fingerprint/", view_func=api.fingerprint,
                  methods=["POST"])
 app.add_url_rule("/api/make_choice/", view_func=api.make_choice,

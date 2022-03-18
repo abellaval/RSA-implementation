@@ -39,3 +39,7 @@ def result(election_id):
         return redirect(url_for("election", election_id=election_id), code=303)
     election = admin.get_election_by_id(election_id)
     return render_template("result.html", results=election.results)
+
+
+def calculator():
+    return render_template("calculator.html")

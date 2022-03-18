@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} Calculatrice {% endblock %}
+
+{% block body %}
+    <script src="{{ url_for("static", filename="js/RSA.js") }}" type="text/javascript"></script>
+    <h3 style="text-align:center;">Calculatrice RSA</h3>
+
+    <div>
+        <button onclick="onGenerateKeyButtonClick()">Generate keys</button>
+        <div id="content" hidden>
+            <div>
+                <p id="key_e">e = <span id="key_e_val"></span></p>
+                <p id="key_d">d = <span id="key_d_val"></span></p>
+                <p id="key_N">N = <span id="key_N_val"></span></p>
+            </div>
+            <div>
+                <form id="calc_form">
+                    <input type="radio" name="calc_radio" id="encrypt" value="encrypt"
+                           onclick="onRadioButtonClick(true)"
+                           checked="checked"/>
+                    <label for="encrypt">Encrypt</label>
+                    <input type="radio" name="calc_radio" id="decrypt" value="decrypt"
+                           onclick="onRadioButtonClick(true)"/>
+                    <label for="decrypt">Decrypt</label>
+                    <input id="input_text" type="text"
+                           placeholder="" maxlength="22"
+                           pattern="[a-zA-Z1-9 ,]*">
+                    <button id="calc_button" onclick="onConvertButtonClick()"></button>
+                </form>
+            </div>
+            <div>
+                <p id="output" hidden>Output: <span id="output_val"></span></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        onRadioButtonClick();
+    </script>
+
+{% endblock %}

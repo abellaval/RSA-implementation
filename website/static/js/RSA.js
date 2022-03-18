@@ -277,6 +277,56 @@ function decrypt(c, d, N) {
     return int_str(texte)
 }
 
+// yeah I know global vars, boohooo T_T, better than reading from inner html
+let e = undefined;
+let d = undefined;
+let N = undefined;
+
+function onGenerateKeyButtonClick() {
+    const contentElem = document.getElementById("content");
+    [window.e, window.d, window.N] = key_gen(128);
+    const e_span = document.getElementById("key_e_val");
+    const d_span = document.getElementById("key_d_val");
+    const N_span = document.getElementById("key_N_val");
+    e_span.innerText = BigInt(window.e).toString(16);
+    d_span.innerText = BigInt(window.d).toString(16);
+    N_span.innerText = BigInt(window.N).toString(16);
+    contentElem.hidden = false;
+}
+
+function onConvertButtonClick() {
+    event.preventDefault();
+    const inputTextElem = document.getElementById("input_text");
+    const form = document.getElementById("calc_form");
+    const radioVal = form.elements.calc_radio.value;
+    const text = inputTextElem.value;
+    let res;
+    if (radioVal === "encrypt") {
+        res = encrypt(text, window.e, window.N);
+    } else {
+        res = decrypt(text, window.d, window.N);
+    }
+    const outputElem = document.getElementById("output");
+    const outputValElem = document.getElementById("output_val");
+    outputValElem.innerText = res;
+    outputElem.hidden = false;
+    return false;
+}
+
+function onRadioButtonClick(isClicked) {
+    const buttonElem = document.getElementById("calc_button");
+    const inputTextElem = document.getElementById("input_text");
+    const form = document.getElementById("calc_form");
+    const radioVal = form.elements.calc_radio.value;
+    if (radioVal === "encrypt") {
+        inputTextElem.placeholder = "Méssage (alphanumérique + ' ' et ',')"
+        buttonElem.innerText = "Chiffrer"
+    } else {
+        inputTextElem.placeholder = "Cyphertexte (alphanumérique + ' ' et ',')"
+        buttonElem.innerText = "Déchiffrer"
+    }
+}
+
 
 // x = key_gen(1024)
 // e = x[0]
