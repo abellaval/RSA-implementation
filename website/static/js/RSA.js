@@ -201,21 +201,24 @@ function str_int(s){
     return n
   }
 
+function encrypt(m,e,N){
+  texteint= str_int(m)
+  return  E(texteint,e,N);
+}
+
+function decrypt(c,d,N){
+  texte=D(c,d,N)
+  return int_str(texte)
+}
+
 
 
 x=key_gen(1024)
-texte = "je mappelle Son jai 56 ans et je recherche un emploi"
-console.log("N",x[2])
-texteint= str_int(texte)
-console.log("texteint",texteint)
-
-c = E(texteint,x[0],x[2])
-console.log("c",c)
-d = D(c,x[1],x[2])
-console.log(int_str(d))
-
-
-
+e= x[0]
+d=x[1]
+N=x[2]
+texte = encrypt("je mappelle Son jai 56 ans et je recherche un emploi",e,N)
+d=  decrypt(texte,d,N)
 
 
 
