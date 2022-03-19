@@ -10,7 +10,7 @@
     {% for result in results %}
         <div class="card border-primary mb-3">
             <div class="card-header">
-                <h2>Candidat {{ result.candidate.name }}</h2>
+                <h2>{{ result.candidate.name }}</h2>
             </div>
             <div class="card-body">
                 Résultat: <span id={{ result.candidate.id }}>{{ result.votes }}</span>

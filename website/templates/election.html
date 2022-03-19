@@ -7,7 +7,7 @@
     <h1 style="text-align:center;">{{ election.name }}</h1>
 
     <h4>Paramètres de sécurité pris pour cette élection: </h4>
-    <div class="accordion" id="rsa_params" style="width: 40%;">
+    <div class="accordion" id="rsa_params" style="width: 100%;">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -44,34 +44,11 @@
         </div>
     </div>
 
-
-    <!--
-    <div style="display: flex; justify-content: space-around">
-        <div class="card bg-light mb-3" style="max-width: 20rem;">
-            <div class="card-header">Mon "Vote Token"</div>
-            <div class="card-body">
-                <p class="card-text">Voici votre identifiant unique pour cette élection:</p>
-                <p class="card-text" style="text-align: justify; overflow-wrap: break-word;">{{ vote_token }}</p>
-            </div>
-        </div>
-
-        <div class="card bg-light mb-3" style="max-width: 20rem;">
-            <div class="card-header">Clef de signature</div>
-            <div class="card-body">
-                <p class="card-text">Ceci est la clef utilisée pour la signature à l'aveugle</p>
-                {% set signing_e, signing_N = admin_signing_pk.split('$') %}
-                <p class="card-text" style="text-align: justify"><b>e</b> = {{ "%0x" | format(signing_e | int) }}</p>
-                <p class="card-text" ><b>N</b> = {{ "%0x" | format(signing_N | int) }}</p>
-
-            </div>
-        </div>
-    </div>
-    -->
     <h3 style="text-align:center; margin: 2em;">Liste de candidats</h3>
     <div style="display: flex; justify-content: space-around; flex-wrap: wrap">
         {% for candidate, candidate_number in election.candidates %}
 
-            <div class="card border-primary mb-3">
+            <div class="card border-primary mb-2" style="width: 45%;">
                 <div class="card-header">
                     <h2>"{{ candidate.name }}" </h2>
                 </div>
