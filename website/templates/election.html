@@ -3,6 +3,21 @@
 {% block title %} Vote {% endblock %}
 
 {% block body %}
+    <style>
+    .card {margin: 10px;}
+    @media screen and (max-width: 900px){
+        .card, .accordion{
+            width: 90%;
+        }
+
+    }
+    @media screen and (min-width: 900px){
+        .card, .accordion{
+            width: 40%;
+        }
+    }
+    </style>
+
     <script src="{{ url_for("static", filename="js/blinding.js") }}" type="text/javascript"></script>
     <h1 style="text-align:center;">{{ election.name }}</h1>
 
@@ -45,10 +60,9 @@
     </div>
 
     <h3 style="text-align:center; margin: 2em;">Liste de candidats</h3>
-    <div style="display: flex; justify-content: space-around; flex-wrap: wrap">
+    <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap">
         {% for candidate, candidate_number in election.candidates %}
-
-            <div class="card border-primary mb-2" style="width: 45%;">
+            <div class="card border-primary mb-3" style="">
                 <div class="card-header">
                     <h2>"{{ candidate.name }}" </h2>
                 </div>
