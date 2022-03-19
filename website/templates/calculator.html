@@ -17,15 +17,15 @@
             <div>
                 <form id="calc_form">
                     <input type="radio" name="calc_radio" id="encrypt" value="encrypt"
-                           onclick="onRadioButtonClick(true)"
+                           onclick="onRadioButtonClick(false)"
                            checked="checked"/>
                     <label for="encrypt">Encrypt</label>
                     <input type="radio" name="calc_radio" id="decrypt" value="decrypt"
-                           onclick="onRadioButtonClick(true)"/>
+                           onclick="onRadioButtonClick(false)"/>
                     <label for="decrypt">Decrypt</label>
                     <input id="input_text" type="text"
-                           placeholder="" maxlength="22"
-                           pattern="[a-zA-Z1-9 ,]*">
+                           placeholder="" maxlength=""
+                           pattern="" title="" required>
                     <button id="calc_button" onclick="onConvertButtonClick()"></button>
                 </form>
             </div>
@@ -35,7 +35,7 @@
         </div>
     </div>
     <script>
-        onRadioButtonClick();
+        onRadioButtonClick(true);
     </script>
 
 {% endblock %}

@@ -240,7 +240,7 @@ function dec2bin(dec) {
 
 
 function int_str(s) {
-    let b = dec2bin(n)// Ceci est un string in memory of Ben
+    let b = dec2bin(s)// Ceci est un string in memory of Ben
     while (b.length % 6 !== 0) b = "0" + b
     let char = []
     for (let i = 0; i < Math.floor(b.length / 6); ++i) {
@@ -251,7 +251,7 @@ function int_str(s) {
     let string = ""
     for (c in char) {
         let kar = getKeyByValue(char[c])
-        let string = string + kar
+        string = string + kar
     }
     return string
 }
@@ -269,11 +269,11 @@ function str_int(s) {
 
 function encrypt(m, e, N) {
     let texteint = str_int(m)
-    return E(texteint, e, N);
+    return E(texteint, e, N).toString(16)
 }
 
 function decrypt(c, d, N) {
-    let texte = D(c, d, N)
+    let texte = D(BigInt('0x' + c), d, N)
     return int_str(texte)
 }
 
@@ -295,8 +295,11 @@ function onGenerateKeyButtonClick() {
 }
 
 function onConvertButtonClick() {
-    event.preventDefault();
     const inputTextElem = document.getElementById("input_text");
+    if (!inputTextElem.checkValidity()) {
+        return false;
+    }
+    event.preventDefault();
     const form = document.getElementById("calc_form");
     const radioVal = form.elements.calc_radio.value;
     const text = inputTextElem.value;
@@ -313,18 +316,28 @@ function onConvertButtonClick() {
     return false;
 }
 
-function onRadioButtonClick(isClicked) {
+function onRadioButtonClick(isDefault) {
     const buttonElem = document.getElementById("calc_button");
     const inputTextElem = document.getElementById("input_text");
     const form = document.getElementById("calc_form");
+    if (isDefault) {
+        form.elements.calc_radio.value = "encrypt";
+    }
     const radioVal = form.elements.calc_radio.value;
     if (radioVal === "encrypt") {
         inputTextElem.placeholder = "Méssage (alphanumérique + ' ' et ',')"
+        inputTextElem.maxLength = 20
+        inputTextElem.pattern = "^[a-zA-Z0-9 ,]*$"
+        inputTextElem.title = "Le méssage devrait contenir uniquement des lettres, chiffres, espace ou virgule!"
         buttonElem.innerText = "Chiffrer"
     } else {
-        inputTextElem.placeholder = "Cyphertexte (alphanumérique + ' ' et ',')"
+        inputTextElem.placeholder = "Cyphertexte (nombre hexadécimal)"
+        inputTextElem.maxLength = 32
+        inputTextElem.pattern = "^[a-zA-Z0-9]*$"
+        inputTextElem.title = "Le méssage devrait contenir un nombre hexadécimal!"
         buttonElem.innerText = "Déchiffrer"
     }
+    inputTextElem.value = ""
 }
 
 
