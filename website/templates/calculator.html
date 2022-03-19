@@ -4,33 +4,63 @@
 
 {% block body %}
     <script src="{{ url_for("static", filename="js/RSA.js") }}" type="text/javascript"></script>
-    <h3 style="text-align:center;">Calculatrice RSA</h3>
+    <h3 style="text-align:center; margin: 10px;">Calculatrice RSA</h3>
 
+    <h5>Grâce au cryptosystème RSA, vous pouvez chiffrer et déchiffrer vos messages pour pouvoir les envoyer de façon sécurisée!</h5>
+    <p>Testez vous même: </p>
     <div>
-        <button onclick="onGenerateKeyButtonClick()">Generate keys</button>
+        <button onclick="onGenerateKeyButtonClick()" class="btn btn-outline-primary">Génerer de clefs</button>
         <div id="content" hidden>
+            <!--
             <div>
                 <p id="key_e">e = <span id="key_e_val"></span></p>
                 <p id="key_d">d = <span id="key_d_val"></span></p>
                 <p id="key_N">N = <span id="key_N_val"></span></p>
             </div>
+            -->
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Variables</th>
+                  <th scope="col">Valeur</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="table-light">
+                  <th scope="row">e</th>
+                  <td><span id="key_e_val"></span></td>
+                </tr>
+                <tr class="table-light">
+                  <th scope="row">d</th>
+                  <td><span id="key_d_val"></span></td>
+                </tr>
+                <tr class="table-light">
+                  <th scope="row">N</th>
+                  <td><span id="key_N_val"></span></td>
+                </tr>
+              </tbody>
+            </table>
+
+
             <div>
                 <form id="calc_form">
-                    <input type="radio" name="calc_radio" id="encrypt" value="encrypt"
-                           onclick="onRadioButtonClick(false)"
-                           checked="checked"/>
-                    <label for="encrypt">Encrypt</label>
-                    <input type="radio" name="calc_radio" id="decrypt" value="decrypt"
-                           onclick="onRadioButtonClick(false)"/>
-                    <label for="decrypt">Decrypt</label>
                     <input id="input_text" type="text"
                            placeholder="" maxlength=""
-                           pattern="" title="" required>
-                    <button id="calc_button" onclick="onConvertButtonClick()"></button>
+                           pattern="" title="" style="width: 30%" required>
+                    <button id="calc_button" onclick="onConvertButtonClick()" class="btn btn-outline-secondary"></button>
+                    <br>
+                    <input type="radio" name="calc_radio" id="encrypt" value="encrypt"
+                           onclick="onRadioButtonClick(false)" checked="checked"/>
+                    <label for="encrypt">Chiffrer</label>
+
+                    <input type="radio" name="calc_radio" id="decrypt" value="decrypt"
+                           onclick="onRadioButtonClick(false)"/>
+                    <label for="decrypt">Déchiffrer</label>
+
                 </form>
             </div>
             <div>
-                <p id="output" hidden>Output: <span id="output_val"></span></p>
+                <p id="output" hidden>Résultat: <span id="output_val"></span></p>
             </div>
         </div>
     </div>

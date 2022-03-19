@@ -330,12 +330,14 @@ function onRadioButtonClick(isDefault) {
         inputTextElem.pattern = "^[a-zA-Z0-9 ,]*$"
         inputTextElem.title = "Le méssage devrait contenir uniquement des lettres, chiffres, espace ou virgule!"
         buttonElem.innerText = "Chiffrer"
+        buttonElem.className = "btn btn-outline-warning"
     } else {
         inputTextElem.placeholder = "Cyphertexte (nombre hexadécimal)"
         inputTextElem.maxLength = 32
         inputTextElem.pattern = "^[a-zA-Z0-9]*$"
         inputTextElem.title = "Le méssage devrait contenir un nombre hexadécimal!"
         buttonElem.innerText = "Déchiffrer"
+        buttonElem.className = "btn btn-outline-success"
     }
     inputTextElem.value = ""
 }

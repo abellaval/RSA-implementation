@@ -6,36 +6,27 @@
 {% block body %}
     <script src="{{ url_for("static", filename="js/fingerprint.js") }}" type="text/javascript"></script>
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for msg in messages %}
-                <div id="popUp" class="alert alert-dismissible alert-success">
-                    <button id="closeBtn" type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    {{ msg }} <a href="#" class="alert-link">see results</a>.
+    <h3 style="text-align:center; margin: 2em">Liste des élections!</h3>
+
+    <div style="display: flex; justify-content: space-around; flex-wrap: wrap">
+        {% for election in all_elections %}
+            <div class="card border-success mb-3">
+                <div class="card-header">
+                    <h2>Election {{ election.name }}</h2>
                 </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    <h3 style="text-align:center;">Liste des élections!</h3>
-
-    {% for election in all_elections %}
-        <div class="card border-primary mb-3">
-            <div class="card-header">
-                <h2>Election {{ election.name }}</h2>
+                <div class="card-body">
+                    Description: {{ election.description }}
+                </div>
+                <div class="card-footer">
+                    <a href="./election/{{ election.id }}">
+                        <button class="btn btn-outline-success">
+                            Participer
+                        </button>
+                    </a>
+                </div>
             </div>
-            <div class="card-body">
-                Description: {{ election.description }}
-            </div>
-            <div class="card-footer">
-                <a href="./election/{{ election.id }}">
-                    <button class="btn btn-outline-success">
-                        Participer
-                    </button>
-                </a>
-            </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
     <script> generateFingerprint(window.location.href + "api/fingerprint/", 0)</script>
 {% endblock %}
 {% block script %}

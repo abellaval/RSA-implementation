@@ -1,3 +1,5 @@
+PRAGMA encoding='UTF-8';
+
 CREATE TABLE IF NOT EXISTS election(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -42,3 +44,4 @@ CREATE TABLE IF NOT EXISTS candidate_in_election(
     candidate_id INTEGER REFERENCES candidate(id),
     vote_number INTEGER NOT NULL
 );
+
