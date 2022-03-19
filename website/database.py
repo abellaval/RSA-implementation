@@ -41,7 +41,7 @@ if __name__ == "__main__":
         print("Creating keys...")
         admin = Admin.get_admin()
         all_elections = admin.get_all_elections()
-        k = 2048
+        k = 256
         values = ""
         for election in all_elections:
             sk, pk, _, _, _, _ = RSA.KeyGen(k)

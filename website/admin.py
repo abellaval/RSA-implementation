@@ -18,7 +18,7 @@ class Admin:
     def get_admin():
         global admin
         if admin is None:
-            sk, pk, _, _, _, _ = RSA.KeyGen(k=1024)
+            sk, pk, _, _, _, _ = RSA.KeyGen(k=256)
             sk = f"{sk[0]}${sk[1]}"
             pk = f"{pk[0]}${pk[1]}"
             admin = Admin((sk, pk))
