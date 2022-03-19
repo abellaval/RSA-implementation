@@ -1,4 +1,7 @@
+from email import message
+from socket import MsgFlag
 from manim import *
+from numpy import meshgrid
 
 HOME = "Icons/"
 
@@ -48,4 +51,46 @@ class IntroRSA(Scene):
         runtime = 2
         self.play(lock_open_red_ech.animate.next_to(bob_img.get_top() + np.array([-1, 0, 0]), UP), lock_open_green_ech.animate.next_to(alice_img.get_top() + np.array([1, 0, 0]), UP), run_time=runtime)
 
-        self.wait(5)
+        self.wait(2)
+
+        msg_alice = ImageMobject(f"{HOME}LetterClosed.png").scale(0.3).next_to(alice_img.get_right(), RIGHT)
+
+        boite = ImageMobject(f"{HOME}Product-256.png").scale(0.6).next_to(msg_alice.get_right() + np.array([1, 0, 0]), RIGHT)
+
+        self.play(FadeIn(msg_alice))
+
+        self.play(FadeIn(boite))
+
+        self.play(msg_alice.animate.next_to(boite.get_center(), ORIGIN))
+
+        self.play(FadeOut(msg_alice))
+
+        self.play(FadeIn(lock_open_green_ech))
+
+        self.play(lock_open_green_ech.animate.next_to(boite.get_right(), UP))
+
+        lock_close = ImageMobject(f"{HOME}Lock-256(1).png").scale(0.3).next_to(lock_open_green_ech.get_center(), ORIGIN)
+
+        self.play(FadeOut(lock_open_green_ech), FadeIn(lock_close))
+
+        msg_ouvert = ImageMobject(f"{HOME}LetterOpen.png").scale(0.3).next_to(bob_img.get_left(), LEFT)
+
+        self.play(boite.animate.next_to(msg_ouvert.get_left() - np.array([1, 0, 0]), LEFT), lock_close.animate.next_to(msg_ouvert.get_left() - np.array([0.7, -0.5, 0]), LEFT))
+
+        self.play(FadeIn(key_green))
+
+        self.play(key_green.animate.next_to(lock_close.get_right(), ORIGIN))
+
+        lock_open_green_ech.next_to(lock_close.get_center(), ORIGIN)
+
+        self.play(FadeOut(lock_close), FadeIn(lock_open_green_ech))
+
+        self.play(key_green.animate.next_to(bob_img.get_bottom() - np.array([-0.5, spc_alice_bob_cadena_clef, 0]), DOWN))
+
+        msg_alice.next_to(boite.get_center(), ORIGIN)
+
+        self.play(FadeIn(msg_alice))
+
+        self.play(msg_alice.animate.next_to(msg_ouvert.get_center(), ORIGIN))
+
+        self.play(FadeOut(msg_alice), FadeIn(msg_ouvert))
