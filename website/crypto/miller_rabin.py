@@ -1,6 +1,4 @@
-from math import *
-from random import randint as rand
-from website.crypto.tools import *
+from .tools import *
 
 
 def miller_rabin(n, k=40):

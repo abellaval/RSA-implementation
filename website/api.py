@@ -1,7 +1,7 @@
 from flask import request, make_response, redirect, url_for, render_template
 from fingerprint import generate_fingerprint
-from website.admin import Admin
-from website.ballot import Ballot
+from admin import Admin
+from ballot import Ballot
 import crypto.RSA as RSA
 
 

@@ -1,9 +1,5 @@
-from math import *
-from random import randint as rand
 from time import time
-
-from website.crypto.tools import *
-from website.crypto.miller_rabin import *
+from .miller_rabin import *
 
 
 def random(k):

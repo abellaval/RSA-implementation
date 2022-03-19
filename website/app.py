@@ -3,7 +3,7 @@ from flask_apscheduler import APScheduler
 import views
 import api
 import database
-from website.ballot import Ballot
+from ballot import Ballot
 
 app = Flask(__name__)
 app.secret_key = "9aa15ada40490ed9549547aba8826752be22cd873e797eaaed98b0f07a17d490"

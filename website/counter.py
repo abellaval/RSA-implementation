@@ -1,6 +1,6 @@
 import database
 import crypto.RSA as RSA
-from website.admin import Admin
+from admin import Admin
 
 counter = None
 

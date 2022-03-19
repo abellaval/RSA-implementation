@@ -1,9 +1,9 @@
 from hashlib import sha512
 
 import database
-from website.models.candidate import Candidate
-from website.models.election import Election
-from website.models.result import Result
+from models.candidate import Candidate
+from models.election import Election
+from models.result import Result
 import crypto.RSA as RSA
 
 admin = None

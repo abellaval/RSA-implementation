@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, \
     flash
-from website.admin import Admin
+from admin import Admin
 
 
 def index():

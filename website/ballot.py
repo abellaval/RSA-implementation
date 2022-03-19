@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-from website.admin import Admin
-from website.counter import Counter
+from admin import Admin
+from counter import Counter
 
 ballot = None
 
