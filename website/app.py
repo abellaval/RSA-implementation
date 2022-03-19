@@ -29,7 +29,7 @@ scheduler.start()
 
 scheduler.add_job("ballot_tick", lambda: Ballot.tick(scheduler),
                   trigger="interval",
-                  seconds=5)
+                  seconds=2)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

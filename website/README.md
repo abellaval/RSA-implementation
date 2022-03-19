@@ -22,7 +22,7 @@
 > :warning: if pip doesn't work, try pip3 instead
 - Export Flask env vars for developement (needs to be done for each new shell session)
 ```shell
-  source flask_env.sh
+  source flask_env_debug.sh
 ```
 > :warning: this step is not necessary if you are using Pycharm, you can setup these inside the project launch config.
 - Run the dev server
